@@ -1,5 +1,5 @@
-# ygUI
-/Users/juan/Desktop/gitrepo/yg-ui/README.md
+# ygUI. 
+Javascript UI Components
 
 ## to-do. 
 * circular percentage bar (*)
