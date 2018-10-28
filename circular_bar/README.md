@@ -1,5 +1,7 @@
 # Circular Percentage Bar
 
+## Preview
+
 ## Usage 
 
 html
@@ -14,6 +16,7 @@ var circularBar = new CircularBar().create();
 var target = document.getElementById('target');
 target.appendChild(circularBar.svg);
 ```
+## Examples
 
 ## Browsers support
 
