@@ -1,3 +1,7 @@
+/**
+ * @author Yeon Ju An
+ * Circular percentage bar 
+ */
 var CircularBar = (function ()
 {
     var __assign = (this && this.__assign) || function () {
@@ -48,7 +52,7 @@ var CircularBar = (function ()
      * @param {Number} radius
      */
     function arcPath(start, percentage, innerRadius, radius) {
-         var end = start + (percentage / 100) * ((Math.PI / 180 * 270) - start);
+        var end = start + (percentage / 100) * ((Math.PI / 180 * 270) - start);
         return [
                 'M',
                 radius + innerRadius * Math.cos(start),
@@ -64,18 +68,20 @@ var CircularBar = (function ()
 
     /**
      * @private
-     * @value
-     * option( opts ) 의 기본 값.
+     * option(opts) 의 기본 값.
      */
     var defaults = 
     {
         bgColor: '#EEF5DB',
-        lineColor: '#E63462',
+        lineColor: '#E63462', 
         lineWidth: 5,
+        lineCap: 'round',
         radius: 50,
         percentage: 0,
         textColor: '#000000',
-        showText: true
+        textSize: 12,
+        showText: true,
+        emptyLineColor : '#E0E0E0'
     }
 
     /**
@@ -121,23 +127,35 @@ var CircularBar = (function ()
         this.innerRadius = this.opts.radius - (this.opts.lineWidth / 2);
         this.end = this.start + (this.percentage / 100) * ((Math.PI / 180 * 270) - this.start);
 
+        // Create Empty Path
+        this.emptypath = createSVGElem('path',
+        {
+            'fill': 'transparent',
+            'stroke': this.opts.emptyLineColor,
+            'stroke-width': this.opts.lineWidth,
+            'd': arcPath(this.start, 99.9, this.innerRadius, this.opts.radius)
+        });
+        this.svg.appendChild(this.emptypath);
+
         // Create Path
         this.path = createSVGElem('path',
         {
             'fill': 'transparent',
             'stroke': this.opts.lineColor,
             'stroke-width': this.opts.lineWidth,
-            'd': arcPath(this.start, this.percentage, this.innerRadius, this.opts.radius)
+            'd': arcPath(this.start, this.percentage, this.innerRadius, this.opts.radius),
+            'stroke-linecap' : this.opts.lineCap
         });
         this.svg.appendChild(this.path);
 
+        // Create Path
         this.text = createSVGElem('text',
         {
             'fill': this.opts.textColor,
              'x': _svgSize / 2,
-             'y': _svgSize / 2 + 5,
+             'y': _svgSize / 2 + this.opts.textSize / 2,
              'text-anchor': 'middle',
-             'font-size': 10
+             'font-size': this.opts.textSize
         });
         this.text.textContent = '' + this.percentage + '%';
         this.svg.appendChild(this.text);
@@ -165,19 +183,21 @@ var CircularBar = (function ()
      */
     CirclularBar.prototype.setPercentage = function (percentage, animation, mseconds)
     {
+        percentage = parseFloat(percentage);
         var _this = this;
         if(animation)
         {
                 var destPercentage = percentage;
                 var inc = (destPercentage - this.percentage) / mseconds;
 
-                var itv = setInterval(function()
+                var itv = setInterval(function ()
                 {
                     _this.percentage += inc;
                     _this.path.setAttribute('d', arcPath(_this.start, _this.percentage, _this.innerRadius, _this.opts.radius));
-                    if(_this.percentage >= destPercentage)
+                    if(Math.abs(_this.percentage - destPercentage) <= (2 * Math.abs(inc)))
                     {
                         _this.percentage = destPercentage;
+                        _this.text.textContent = '' + _this.percentage + '%';
                         clearInterval(itv);
                     }
                 }, 1);
@@ -186,6 +206,7 @@ var CircularBar = (function ()
         }
         this.percentage = percentage;
         this.path.setAttribute('d', arcPath(this.start, this.percentage, this.innerRadius, this.opts.radius));           
+        this.text.textContent = '' + this.percentage + '%';
     }
 
     return CirclularBar;
