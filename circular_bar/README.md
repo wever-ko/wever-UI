@@ -1,7 +1,7 @@
 # Circular Percentage Bar
 
 ## Preview
-
+![](./docs/exgif.gif)
 ## Usage 
 
 html
