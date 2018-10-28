@@ -1,8 +1,11 @@
 # Circular Percentage Bar
 
 ## Usage 
+
 html
 ```html
+<script src="path/to/curcular_bar.js"></script>
+
 <div id = 'target'></div>
 ```
 javascript
