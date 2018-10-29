@@ -2,6 +2,7 @@
 Javascript UI Components
 
 ## to-do. 
+* slider (가장먼저 해야할듯) 
 * circular percentage bar (*)
 * loading spinner
 * loading bar
