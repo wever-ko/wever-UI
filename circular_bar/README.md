@@ -12,11 +12,9 @@ html
 ```
 javascript
 ```javascript
-var circularBar = new CircularBar().create();
 var target = document.getElementById('target');
-target.appendChild(circularBar.svg);
+var circularBar = new CircularBar().create(target);
 ```
-## Examples
 
 ## Browsers support
 
