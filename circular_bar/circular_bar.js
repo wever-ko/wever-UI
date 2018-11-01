@@ -82,7 +82,8 @@ var CircularBar = (function ()
         textColor: '#000000',
         textSize: 12,
         showText: true,
-        emptyLineColor : '#E0E0E0'
+        emptyLineColor: '#E0E0E0',
+        emptyLineWidth: 5
     }
 
     /**
@@ -133,7 +134,7 @@ var CircularBar = (function ()
         {
             'fill': 'transparent',
             'stroke': this._opts.emptyLineColor,
-            'stroke-width': this._opts.lineWidth,
+            'stroke-width': this._opts.emptyLineWidth,
             'd': arcPath(this._start, 99.99, this._innerRadius, this._opts.radius)
         });
         this.svg.appendChild(this._emptypath);
@@ -174,11 +175,10 @@ var CircularBar = (function ()
      */
     CircularBar.prototype.val = function (percentage, anim, mseconds)
     {
-        percentage = parseFloat(percentage);
-        var _this = this;
-
         if (typeof percentage !== "undefined")
         {
+            percentage = parseFloat(percentage);
+            var _this = this;
 
             if (anim)
             {
@@ -222,6 +222,29 @@ var CircularBar = (function ()
             this._text.textContent = str;
         }
         return this._text.textContent;
+    }
+
+    CircularBar.prototype.setLineOpts = function (opts)
+    {
+        __attrs(this._path, opts);
+    }
+
+    CircularBar.prototype.setEmptyLineOpts = function (opts)
+    {
+        __attrs(this._emptypath, opts);
+    }
+
+    CircularBar.prototype.setRadius = function (radius)
+    {
+        this._opts.radius = parseFloat(radius);
+        var svgSize = this._opts.radius * 2;
+        __attrs(this.svg, {'width': svgSize, 'height': svgSize});
+        __attrs(this._text, {'x': svgSize / 2,'y': svgSize / 2 + this._opts.textSize / 2});
+        
+        this._innerRadius = this._opts.radius - (this._opts.lineWidth / 2);
+        this._end = this.start + (this._percentage / 100) * ((Math.PI / 180 * 270) - this._start);
+        this._path.setAttribute('d', arcPath(this._start, this._percentage, this._innerRadius, this._opts.radius));
+        this._emptypath.setAttribute('d',arcPath(this._start, 99.99, this._innerRadius, this._opts.radius));
     }
 
     return CircularBar;
