@@ -52,7 +52,9 @@ var CircularBar = (function ()
      * @param {Number} radius
      */
     function arcPath(start, percentage, innerRadius, radius) {
+        if(percentage >= 100) percentage = 99.9;
         var end = start + (percentage / 100) * ((Math.PI / 180 * 270) - start);
+        
         return [
                 'M',
                 radius + innerRadius * Math.cos(start),
@@ -75,7 +77,6 @@ var CircularBar = (function ()
         bgColor: '#EEF5DB',
         lineColor: '#E63462', 
         lineWidth: 5,
-        lineCap: 'round',
         radius: 50,
         percentage: 0,
         textColor: '#000000',
@@ -89,10 +90,10 @@ var CircularBar = (function ()
      * @constructor
      * @param {Object} opts
      */
-    function CirclularBar(opts)
+    function CircularBar(opts)
     {
         if (opts === void 0) { opts = {}; }
-        this.opts = __assign({}, defaults, opts);
+        this._opts = __assign({}, defaults, opts);
     }
 
     /**
@@ -100,115 +101,117 @@ var CircularBar = (function ()
      * @method
      * @param {ElementObject} target 그래프를 생성할 타깃
      */
-    CirclularBar.prototype.create = function (target)
+    CircularBar.prototype.create = function (target)
     {
         // Size of SVG
-        var _svgSize = this.opts.radius * 2;
+        var svgSize = this._opts.radius * 2;
        
         // Create SVG
         this.svg = createSVGElem('svg',
         {
             'xmlns': 'http://www.w3.org/2000/svg',
-            'width': _svgSize,
-            'height': _svgSize
+            'width': svgSize,
+            'height': svgSize
         });
         
         // Create Background Rect
-        this.bg = createSVGElem('rect',
+        this._bg = createSVGElem('rect',
         {
-            'fill': this.opts.bgColor,
+            'fill': this._opts.bgColor,
             'width': '100%',
             'height': '100%'
         });
-        this.svg.appendChild(this.bg);
+        this.svg.appendChild(this._bg);
 
-        this.percentage = this.opts.percentage;
-        this.start = (-Math.PI / 180 * 90);
-        this.innerRadius = this.opts.radius - (this.opts.lineWidth / 2);
-        this.end = this.start + (this.percentage / 100) * ((Math.PI / 180 * 270) - this.start);
+        this._percentage = this._opts.percentage;
+        this._start = (-Math.PI / 180 * 90);
+        this._innerRadius = this._opts.radius - (this._opts.lineWidth / 2);
+        this._end = this.start + (this._percentage / 100) * ((Math.PI / 180 * 270) - this._start);
 
         // Create Empty Path
-        this.emptypath = createSVGElem('path',
+        this._emptypath = createSVGElem('path',
         {
             'fill': 'transparent',
-            'stroke': this.opts.emptyLineColor,
-            'stroke-width': this.opts.lineWidth,
-            'd': arcPath(this.start, 99.9, this.innerRadius, this.opts.radius)
+            'stroke': this._opts.emptyLineColor,
+            'stroke-width': this._opts.lineWidth,
+            'd': arcPath(this._start, 99.99, this._innerRadius, this._opts.radius)
         });
-        this.svg.appendChild(this.emptypath);
+        this.svg.appendChild(this._emptypath);
 
         // Create Path
-        this.path = createSVGElem('path',
+        this._path = createSVGElem('path',
         {
             'fill': 'transparent',
-            'stroke': this.opts.lineColor,
-            'stroke-width': this.opts.lineWidth,
-            'd': arcPath(this.start, this.percentage, this.innerRadius, this.opts.radius),
-            'stroke-linecap' : this.opts.lineCap
+            'stroke': this._opts.lineColor,
+            'stroke-width': this._opts.lineWidth,
+            'd': arcPath(this._start, this._percentage, this._innerRadius, this._opts.radius)
         });
-        this.svg.appendChild(this.path);
+        this.svg.appendChild(this._path);
 
         // Create Path
-        this.text = createSVGElem('text',
+        this._text = createSVGElem('text',
         {
-            'fill': this.opts.textColor,
-             'x': _svgSize / 2,
-             'y': _svgSize / 2 + this.opts.textSize / 2,
+            'fill': this._opts.textColor,
+             'x': svgSize / 2,
+             'y': svgSize / 2 + this._opts.textSize / 2,
              'text-anchor': 'middle',
-             'font-size': this.opts.textSize
+             'font-size': this._opts.textSize
         });
-        this.text.textContent = '' + this.percentage + '%';
-        this.svg.appendChild(this.text);
+
+        this.svg.appendChild(this._text);
         return this;
     }
 
-    /**
-     * @public
-     * @method
-     * 퍼센티지 값을 리턴합니다.
-     * @return {Number} 퍼센티지 값.
-     */
-    CirclularBar.prototype.getPercentage = function ()
-    {
-        return this.opts.percentage;
-    }
-
-    /**
-     * @public
-     * @method
-     * 퍼센티지 값을 세팅합니다.
-     * @param {Number} percentage 세팅할 퍼센티지 값
-     * @param {Boolean} animation 애니메이션 여부
-     * @param {Number} mseconds 애니메이션이 수행 될 시간
-     */
-    CirclularBar.prototype.setPercentage = function (percentage, animation, mseconds)
+    CircularBar.prototype.val = function (percentage, anim, mseconds)
     {
         percentage = parseFloat(percentage);
         var _this = this;
-        if(animation)
+
+        if (typeof percentage !== "undefined")
         {
-                var destPercentage = percentage;
-                var inc = (destPercentage - this.percentage) / mseconds;
+
+            if (anim)
+            {
+                var destPercentage = percentage,
+                    unit = (destPercentage - this._percentage) / mseconds;
 
                 var itv = setInterval(function ()
                 {
-                    _this.percentage += inc;
-                    _this.path.setAttribute('d', arcPath(_this.start, _this.percentage, _this.innerRadius, _this.opts.radius));
-                    if(Math.abs(_this.percentage - destPercentage) <= (2 * Math.abs(inc)))
+                    _this._percentage += unit;
+                    if(Math.abs(_this._percentage - destPercentage) <= (2 * Math.abs(unit)))
                     {
-                        _this.percentage = destPercentage;
-                        _this.text.textContent = '' + _this.percentage + '%';
+                        _this._percentage = destPercentage;
                         clearInterval(itv);
                     }
+                    _this._path.setAttribute('d', arcPath(_this._start, _this._percentage, _this._innerRadius, _this._opts.radius));
+                   
+                    if(typeof _this.step === "function")
+                    {
+                        _this.step();
+                    }
                 }, 1);
-
-            return;
+                return;
+            }
+            this._percentage = percentage;
+            this._path.setAttribute('d', arcPath(this._start, this._percentage, this._innerRadius, this._opts.radius));                 
         }
-        this.percentage = percentage;
-        this.path.setAttribute('d', arcPath(this.start, this.percentage, this.innerRadius, this.opts.radius));           
-        this.text.textContent = '' + this.percentage + '%';
+
+        return this._percentage;
+    }
+    
+    /**
+     * @public
+     * @method
+     */
+    CircularBar.prototype.text = function (str)
+    {
+        if(typeof str !== "undefined")
+        {
+            this._text.textContent = str;
+        }
+        return this._text.textContent;
     }
 
-    return CirclularBar;
+    return CircularBar;
 
 }());

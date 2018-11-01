@@ -3,84 +3,52 @@
 <head>
     <title> Circular Percentage Bar</title>
     <script type="text/javascript" src = "circular_bar.js"></script>
+    <style type="text/css">
+        html {
+            font-size: 12px;
+        }
+        .attrName {
+            display: inline-block;
+            width: 60px;
+        }
+    </style>
 </head>
 <body>
-    <table style="width:400px;">
-    <tr>
-        <td>
-            <span> Test1 </span>
-            <div id = 'test1' style="width: 100px; height: 100px;"></div>
-        </td>
-        <td>
-            <span> Test2 </span> 
-             <div id = 'test2' style="width: 100px; height: 100px;"></div>
-        </td> 
-        <td>
-            <span> Test3 </span> 
-             <div id = 'test3' style="width: 100px; height: 100px;"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span> Test4 </span> 
-            <div id = 'test4' style="width: 100px; height: 100px;"></div>    
-        </td>
-        <td>
-           %: <input id = "pinput" type="text" name="%" size="5" value="70"> 
-           <button onclick ="setBtnClick();"> set </button>
-        </td> 
-    </tr>
-    </table>
+    <div id = 'test' style="width: 100px; height: 100px;"></div> 
+    <div>
+        <div>
+            <div class="attrName"> %: </div> <input id = "percentageInput" type="text" name="%" size="5" value="70"> 
+            <button onclick ="setBtnClick();"> set </button>
+        </div>
+        <div>
+            <div class="attrName"> Color: </div> <input id ="colorInput" type ="text" name = "color" size = "7" value ="#ffffff">
+            <button onclick="setColorBtnClick();"> set </button>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
     
-    //  Test 1
-    var circularBar1 = new CircularBar({
-        lineWidth : 4,
-        percentage: 20,
-        radius : 50,
-        textColor: '#333745'
-    }).create();
-
-    var target1 = document.getElementById('test1');
-    target1.appendChild(circularBar1.svg);
-
-    //  Test 2
-    var circularBar2 = new CircularBar({
-        lineWidth : 6,
-        lineColor : '#ffe57f',
-        percentage: 50,
-        radius : 50
-    }).create();
-
-    var target2 = document.getElementById('test2');
-    target2.appendChild(circularBar2.svg);
-
-    //  Test 3
-    var circularBar3 = new CircularBar({
-        lineWidth : 6,
-        percentage: 70,
-        radius : 50,
-        lineColor: '#00838f'
-    }).create();
-
-    var target3 = document.getElementById('test3');
-    target3.appendChild(circularBar3.svg);
-
     // Test 4
     var circularBar4 = new CircularBar({
-        lineWidth : 6,
+        lineWidth : 40,
         percentage: 70,
         radius : 50,
-        lineColor: '#d500f9'
+        lineColor: '#d500f9',
+        bgColor : '#ffffff'
     }).create();
 
-    var target4 = document.getElementById('test4');
+    var target4 = document.getElementById('test');
     target4.appendChild(circularBar4.svg);
+    
+    circularBar4.step = function ()
+    {
+       
+        circularBar4.text.textContent = "" + Math.round(circularBar4.percentage) + "%";
+    }
 
     function setBtnClick() {
-        var p = document.getElementById("pinput").value;
-        circularBar4.setPercentage(parseFloat(p), true, 100);
+        var p = document.getElementById("percentageInput").value;
+        circularBar4.val(parseFloat(p), true, 100);
     }
 </script>
 </html>
