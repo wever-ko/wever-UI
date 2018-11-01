@@ -17,7 +17,7 @@ var circularBar = new CircularBar().create(target);
 ```
 
 ## Docs
-[CircularBar API docs](https://www.google.com)
+[CircularBar API docs](./DOC.md)
 
 ## Browsers support
 
