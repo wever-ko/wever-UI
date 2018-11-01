@@ -28,6 +28,8 @@
 </body>
 <script type="text/javascript">
     
+    var target4 = document.getElementById('test');
+    
     // Test 4
     var circularBar4 = new CircularBar({
         lineWidth : 40,
@@ -35,14 +37,11 @@
         radius : 50,
         lineColor: '#d500f9',
         bgColor : '#ffffff'
-    }).create();
+    }).create(target4);
 
-    var target4 = document.getElementById('test');
-    target4.appendChild(circularBar4.svg);
-    
+
     circularBar4.step = function ()
     {
-       
         circularBar4.text.textContent = "" + Math.round(circularBar4.percentage) + "%";
     }
 

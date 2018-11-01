@@ -159,9 +159,19 @@ var CircularBar = (function ()
         });
 
         this.svg.appendChild(this._text);
+
+        target.appendChild(this.svg);
         return this;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Number} percentage 설정할 퍼센티지 값
+     * @param {Boolean} animation 애니메이션 여부
+     * @param {Number} mseconds 에니메이션을 실행시킬 시간
+     * @return {String}
+     */
     CircularBar.prototype.val = function (percentage, anim, mseconds)
     {
         percentage = parseFloat(percentage);
@@ -198,10 +208,12 @@ var CircularBar = (function ()
 
         return this._percentage;
     }
-    
+
     /**
      * @public
      * @method
+     * @param {String} (optional) 설정할 text 값
+     * @return {String}
      */
     CircularBar.prototype.text = function (str)
     {
