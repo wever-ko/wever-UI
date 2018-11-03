@@ -15,9 +15,10 @@ javascript
 var target = document.getElementById('target');
 var circularBar = new CircleGauge().create(target);
 ```
-
+## Examples
+[CircleGauge Examples](https://yeonjuan.github.io/ygui/circlegauge.html)
 ## Docs
-[CircularBar API docs](./DOC.md)
+[CircleGauge API docs](./DOC.md)
 
 ## Browsers support
 
