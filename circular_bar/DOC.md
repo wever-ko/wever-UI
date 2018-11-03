@@ -1,8 +1,8 @@
-# Circular Percentage Bar
+# CircleGauge
  
 ### Constructor 
-#### CirclularBar(options)
-  > CircularBar 객체를 생성한다.  
+#### CircleGauge(options)
+  > CircleGauge 객체를 생성한다.  
   > ```javascript 
   > var options = {
   >   lineWidth: 10,
@@ -10,7 +10,7 @@
   >   radius: 50,
   >   lineColor: '#d500f9'
   > }
-  > var circularBar = new CircularBar(options);
+  > var circularBar = new CircleGauge(options);
   > ```
   >  ###### Parameters  
   > * `options` <sub><sup>Object</sub></sup> 
@@ -37,12 +37,12 @@
   >   radius: 50,
   >   lineColor: '#d500f9'
   > }
-  > var circularBar = new CurcularBar(optios).create(target);
+  > var circularBar = new CircleGauge(optios).create(target);
   > ```
   >  ###### Parameters  
   > * `target` <sub><sup>Node</sub></sup>   
   >  ###### Returns  
-  > * `CurcularBar` <sub><sup>Object</sub></sup> 
+  > * `CircleGauge` <sub><sup>Object</sub></sup> 
 #### val()
   > 현재 퍼센티지 값을 반환한다.   
   > ```javascript
