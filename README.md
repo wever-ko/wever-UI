@@ -1,6 +1,8 @@
 # ygUI. 
 Javascript UI Components
 
+- [Circle Gauge](./CircleGauge) <sub><sup>[examples](https://yeonjuan.github.io/ygui/circlegauge.html)</sup></sub>
+
 ## to-do.  
 - [x] circular percentage bar
 - [ ] loading spinner
