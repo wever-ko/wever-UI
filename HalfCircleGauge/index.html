@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title> Circular Percentage Bar</title>
+    <title> Half Circular Gauge</title>
     <script type="text/javascript" src = "HalfCircleGauge.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     
@@ -84,10 +84,10 @@
     console.log(circularBar);
     circularBar.text("" + Math.round(circularBar.val()) + "%");
     
-    //circularBar.step = function ()
-   // {
-     //   circularBar.text("" + Math.round(circularBar.val()) + "%");
-   // }
+    circularBar.step = function ()
+    {
+        circularBar.text("" + Math.round(circularBar.val()) + "%");
+    }
 
     // Value
   
