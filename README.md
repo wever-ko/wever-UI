@@ -1,9 +1,10 @@
 # ygUI. 
 Javascript UI Components
 
-|          |            |   |
-| ------------- |:-------------:| -----:|
-| *Circle Gauge* <br> ![circlegauge](./CircleGauge/docs/eximg.png) <br> [code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circlegauge.html) |  |  |
+| *Circle Gauge* | *Half Circle Gauge* |
+| :------------- | :------------- |
+| ![circlegauge](./CircleGauge/docs/eximg.png) | ![halfcirclegauge](./HalfCircleGauge/docs/eximg.png) |
+|[code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circlegauge.html) |[code](./HalfCircleGauge) <br> [examples]() |
 
 ## to-do.  
 - [x] circular percentage bar
