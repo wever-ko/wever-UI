@@ -156,7 +156,13 @@ var HalfCircleGauge = (function ()
             this.opts.percentage = v;
             var o = this.opts;
             this.path.setAttribute('d', arcPath(0, o.percentage, o.radius, this._getoffx(), this._geth()));
+            
+            if(typeof this.step === "function")
+            {
+                this.step();
+            }
         }
+
         return this.opts.percentage;
     }
 
