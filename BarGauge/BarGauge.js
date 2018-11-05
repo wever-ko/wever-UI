@@ -48,9 +48,7 @@ var BarGauge = (function ()
     	height: 10,
     	progressColor: "#000000",
     	remainColor: "#FF0000",
-    	value: 50,
-    	min: 0,
-    	max: 100
+    	value: 50,         //percent value
     };
 
     function BarGauge(opts) {
@@ -80,6 +78,43 @@ var BarGauge = (function ()
     	target.appendChild(this.svg);
     	this.svg.appendChild(this.remain);
         this.svg.appendChild(this.progress);
+    }
+
+
+    BarGauge.prototype.val = function (value) {
+        if (typeof value != "undefined") {
+            var w = this._opts.width/100*value;
+            this.progress.setAttribute('width', w);
+        }
+        return this._opts.value;
+    }
+
+    BarGauge.prototype.width = function (width) {
+        if (typeof width != "undefined") {
+            this._opts.width = width;
+            this.svg.setAttribute('width', width);
+            this.remain.setAttribute('width', width);
+            this.val(this._opts.value);
+        }
+        return this._opts.width;
+    }
+
+    BarGauge.prototype.height = function (height) {
+        if (typeof height != "undefined") {
+            this._opts.height = height;
+            this.svg.setAttribute('height', height);
+            this.remain.setAttribute('height', height);
+            this.progress.setAttribute('height', height);
+        }
+        return this._opts.height;
+    }
+
+    BarGauge.prototype.progressColor = function (color) {
+        if (typeof color != "undefined") {
+            this._opts.progressColor = color;
+            this.progress.setAttribute('fill', color);
+        }
+        return this._opts.progressColor;
     }
     return BarGauge;
 
