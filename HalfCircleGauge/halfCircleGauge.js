@@ -48,24 +48,16 @@ var HalfCircleGauge = (function ()
         __attrs(el, attrs);
         return el;
     }
-/*
-    function arcPath (start, percentage, radius, x, y) {
-        if (percentage >= 100) percentage = 99.99;
-        var end = start + (percentage / 100) * ((Math.PI / 180 * 270) - start);
-        
-        return [    
-                'M',
-                radius + x + radius * Math.cos(start),
-                radius + y + radius * Math.sin(start),
-                'A',
-                radius, radius, 0,
-                percentage > 50 ? 1 : 0,
-                1,
-                radius + x + radius * Math.cos(end),
-                radius + y + radius * Math.sin(end)
-            ].join(' ');
-    }
-*/
+
+    /**
+     * @private
+     * @method
+     * @param {Number} s
+     * @param {Number} p
+     * @param {Number} r
+     * @param {Number} ox
+     * @param {Number} oy
+     */
     function arcPath (s, p, r, ox, oy)
     {
         var e =  (Math.PI) * p / 100;
@@ -95,12 +87,22 @@ var HalfCircleGauge = (function ()
         emptyLineWidth: 20
     }
 
+    /**
+     * @public
+     * @constructor
+     * @param {Object} opts
+     */
     function HalfCircleGauge (opts)
     {
         if (opts === void 0) { opts = {}; }
         this.opts = __assign({}, defaults, opts);
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Element} target
+     */
     HalfCircleGauge.prototype.create = function (target)
     {
         var sw = this._getw(),
@@ -149,6 +151,11 @@ var HalfCircleGauge = (function ()
         return this;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Number} v
+     */
     HalfCircleGauge.prototype.val = function (v)
     {
         if(typeof v !== "undefined")
@@ -166,6 +173,11 @@ var HalfCircleGauge = (function ()
         return this.opts.percentage;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {String} c
+     */
     HalfCircleGauge.prototype.bgColor = function (c)
     {
         if(typeof c !== "undefined")
@@ -176,6 +188,11 @@ var HalfCircleGauge = (function ()
         return this.opts.bgColor;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {String} c
+     */
     HalfCircleGauge.prototype.textColor = function (c)
     {
         if(typeof c !== "undefined")
@@ -186,6 +203,11 @@ var HalfCircleGauge = (function ()
         return this.opts.textColor;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Number} c
+     */
     HalfCircleGauge.prototype.textSize = function (s)
     {
         if(typeof s !== "undefined")
@@ -196,6 +218,11 @@ var HalfCircleGauge = (function ()
         return this.opts.textSize;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {String} t
+     */
     HalfCircleGauge.prototype.text = function (t)
     {
         if(typeof t !== "undefined")
@@ -205,6 +232,11 @@ var HalfCircleGauge = (function ()
         return this._text.textContent;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Number} r
+     */
     HalfCircleGauge.prototype.radius = function (r)
     {
         if(typeof r !== "undefined")
@@ -215,6 +247,11 @@ var HalfCircleGauge = (function ()
         return this.opts.radius;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Number} w
+     */
     HalfCircleGauge.prototype.lineWidth = function (w)
     {
         if(typeof w !== "undefined")
@@ -226,6 +263,11 @@ var HalfCircleGauge = (function ()
         return this.opts.width;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {String} c
+     */
     HalfCircleGauge.prototype.lineColor = function (c)
     {
         if(typeof c !== "undefined")
@@ -236,6 +278,11 @@ var HalfCircleGauge = (function ()
         return this.opts.lineColor;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {Number} w
+     */
     HalfCircleGauge.prototype.emptyLineWidth = function (w)
     {
         if(typeof w !== "undefined")
@@ -247,6 +294,11 @@ var HalfCircleGauge = (function ()
         return this.opts.emptyLineWidth;
     }
 
+    /**
+     * @public
+     * @method
+     * @param {String} c
+     */
     HalfCircleGauge.prototype.emptyLineColor = function (c)
     {
         if(typeof c !== "undefined")
@@ -257,33 +309,53 @@ var HalfCircleGauge = (function ()
         return this.opts.emptyLineColor;
     }
 
+    /**
+     * @public
+     * @method
+     * @return {Number}
+     */
     HalfCircleGauge.prototype._getw = function ()
     {
         var o = this.opts;
         return (o.radius * 2 + (o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth));
     }
 
+    /**
+     * @public
+     * @method
+     * @return {Number}
+     */
     HalfCircleGauge.prototype._geth = function ()
     {
         var o = this.opts;
         return (o.radius + (o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth) / 2);
     }
 
+    /**
+     * @public
+     * @method
+     * @return {Number}
+     */
     HalfCircleGauge.prototype._getoffx = function ()
     {
         var o = this.opts;
         return ((o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth)) / 2;    
     }
 
+    /**
+     * @public
+     * @method
+     */
     HalfCircleGauge.prototype._resize = function ()
     {
         var sw = this._getw(),
             sh = this._geth(),
             o = this.opts;
         __attrs(this.svg, {'width': sw, 'height': sh});
-        
+        __attrs(this._text, {'x' : sw / 2, 'y': sh});
         this.epath.setAttribute('d', arcPath(0, 100, o.radius, this._getoffx(), sh));
         this.path.setAttribute('d', arcPath(0, o.percentage, o.radius, this._getoffx(), sh));
+        
       }
 
     return HalfCircleGauge;
