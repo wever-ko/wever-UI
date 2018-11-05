@@ -59,7 +59,7 @@ var CircleGauge = (function ()
      * @param {Number} y offset y 값
      */
     function arcPath (start, percentage, radius, x, y) {
-        if (percentage >= 100) percentage = 99.9;
+        if (percentage >= 100) percentage = 99.99;
         var end = start + (percentage / 100) * ((Math.PI / 180 * 270) - start);
         
         return [    
@@ -110,7 +110,7 @@ var CircleGauge = (function ()
         lineWidth: 5,
         radius: 50,
         percentage: 0,
-        textColor: '#000000',
+        textColor: '#ff0000',
         textSize: 12,
         showText: true,
         emptyLineColor: '#E0E0E0',
@@ -222,12 +222,13 @@ var CircleGauge = (function ()
                 var itv = setInterval(function ()
                 {
                     _this._opts.percentage += unit;
-                    if (Math.abs(_this._percentage - destPercentage) <= (2 * Math.abs(unit)))
+                    if (Math.abs(_this._opts.percentage - destPercentage) <= (2 * Math.abs(unit)))
                     {
                         _this._opts.percentage = destPercentage;
+                        _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, ofs, ofs));
                         clearInterval(itv);
                     }
-                    _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, _this._opts.radius));
+                    _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, ofs, ofs));
                    
                     if (typeof _this.step === "function")
                     {
@@ -273,7 +274,7 @@ var CircleGauge = (function ()
      */
     CircleGauge.prototype.textColor = function (color)
     {
-        if(typeof color !== undefined)
+        if(typeof color !== "undefined")
         {
             this._opts.textColor = color;
             this._text.setAttribute('fill', color);
