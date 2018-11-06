@@ -63,6 +63,11 @@
             <div class="attrName"> text color: </div>
             <input id = "textColor" type="color" name="color" value="#3f87a6">
         </div>
+        <div>
+            <div class="attrName"> animation: </div>
+            <input id ="animTo" type ="text" name ="num" value="100" size ="10">
+            <button onclick="animStart();"> Start! </button>
+        </div>
     </div>
 </body>
 <script type="text/javascript">
@@ -86,6 +91,7 @@
     
     circularBar.step = function ()
     {
+
         circularBar.text("" + Math.round(circularBar.val()) + "%");
     }
 
@@ -181,6 +187,12 @@
         circularBar.textSize(textSize.value);
         textSizeA.value = textSize.value;
     });
+
+    var animValue = document.getElementById('animTo');
+    function animStart ()
+    {
+        circularBar.val(animValue.value, true, 100);
+    }
 
 
 </script>
