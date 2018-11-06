@@ -156,14 +156,39 @@ var HalfCircleGauge = (function ()
      * @method
      * @param {Number} v
      */
-    HalfCircleGauge.prototype.val = function (v)
+    HalfCircleGauge.prototype.val = function (v, anim, msec)
     {
         if(typeof v !== "undefined")
         {
-            this.opts.percentage = v;
-            var o = this.opts;
-            this.path.setAttribute('d', arcPath(0, o.percentage, o.radius, this._getoffx(), this._geth()));
-            
+            var opts = this.opts;
+            var _this = this;
+            v = parseFloat(v);
+
+            if (anim)
+            {
+                var dv = v,
+                    unit = (dv - opts.percentage) / msec;
+
+                var itv = setInterval( function () 
+                {
+                    _this.opts.percentage += unit;
+                    if( Math.abs(_this.opts.percentage - dv) <= (2 * Math.abs(unit)))
+                    {
+                        _this.opts.percentage = dv;
+                        clearInterval(itv);
+                    }
+                    _this.path.setAttribute('d',  arcPath(0, _this.opts.percentage, _this.opts.radius, _this._getoffx(), _this._geth()));
+                    
+                    if(typeof _this.step === "function")
+                    {
+                        _this.step();
+                    }
+
+                }, 1);
+                return;
+            }
+            this.opts.percentage = dv;
+
             if(typeof this.step === "function")
             {
                 this.step();
