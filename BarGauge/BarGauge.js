@@ -22,10 +22,8 @@ var BarGauge = (function ()
      * @param {ElementObject} elem
      * @param {Object} attrs
      */
-    function __attrs (elem, attrs)
-    {
-        for (var a in attrs)
-        {
+    function __attrs (elem, attrs) {
+        for (var a in attrs) {
             elem.setAttribute(a, attrs[a]);
         }
     }
@@ -36,8 +34,7 @@ var BarGauge = (function ()
      * @param {String} which
      * @param {Object} attrs
      */
-    function createSVGElem(which, attrs)
-    {
+    function createSVGElem(which, attrs) {
         var el = document.createElementNS('http://www.w3.org/2000/svg', which);
         __attrs(el, attrs);
         return el;
@@ -59,18 +56,16 @@ var BarGauge = (function ()
     BarGauge.prototype.create = function (target) {
     	this.svg = createSVGElem('svg',
     	{
-    		'xmlns': 'http://www.w3.org/2000/svg',
+            'xmlns': 'http://www.w3.org/2000/svg',
             'width': this._opts.width,
             'height': this._opts.height
-      });
-    	this.remain = createSVGElem('rect',
-    	{
+        });
+    	this.remain = createSVGElem('rect', {
     		'width': this._opts.width,
     		'height': this._opts.height,
     		'fill': this._opts.remainColor
     	});
-        this.progress = createSVGElem('rect',
-        {
+        this.progress = createSVGElem('rect', {
             'width': this._opts.value,
             'height': this._opts.height,
             'fill': this._opts.progressColor
@@ -83,7 +78,7 @@ var BarGauge = (function ()
 
     BarGauge.prototype.val = function (value) {
         if (typeof value != "undefined") {
-            var w = this._opts.width/100*value;
+            var w = this._opts.width / 100 * value;
             this.progress.setAttribute('width', w);
         }
         return this._opts.value;
