@@ -163,11 +163,10 @@ var HalfCircleGauge = (function ()
             var opts = this.opts;
             var _this = this;
             v = parseFloat(v);
-
+            var dv = v;
             if (anim)
             {
-                var dv = v,
-                    unit = (dv - opts.percentage) / msec;
+                var unit = (dv - opts.percentage) / msec;
 
                 var itv = setInterval( function () 
                 {
@@ -185,10 +184,11 @@ var HalfCircleGauge = (function ()
                     }
 
                 }, 1);
-                return;
+                return this.opts.percentage;
             }
             this.opts.percentage = dv;
-
+            this.path.setAttribute('d', arcPath(0, this.opts.percentage, this.opts.radius, this._getoffx(), this._geth()));
+           
             if(typeof this.step === "function")
             {
                 this.step();

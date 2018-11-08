@@ -3,10 +3,11 @@
 <head>
     <title> Circular Percentage Bar</title>
     <script type="text/javascript" src = "circleGauge.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style type="text/css">
         html {
             font-size: 12px;
-            font-family: Georgia, "Times New Roman", serif;
+          font-family: 'Roboto', sans-serif;
         }
         .attrName {
             display: inline-block;
@@ -61,6 +62,11 @@
             <div class="attrName"> text color: </div>
             <input id = "textColor" type="color" name="color" value="#3f87a6">
         </div>
+        <div>
+            <div class="attrName"> animation: </div>
+            <input id ="animTo" type ="text" name ="num" value="100" size ="10">
+            <button onclick="animStart();"> Start! </button>
+        </div>
     </div>
 </body>
 <script type="text/javascript">
@@ -71,11 +77,13 @@
         lineWidth : 40,
         percentage: 70,
         radius : 50,
-        lineColor: '#d500f9',
+        lineColor: '#5ca284',
         bgColor : '#ffffff',
+        emptyLineColor: '#afdcc9',
         showText: true,
         lineWidth: 25,
-        emptyLineWidth: 25
+        emptyLineWidth: 25,
+        textColor : '#07472C'
     }).create(target);
     
     circularBar.text("" + Math.round(circularBar.val()) + "%");
@@ -176,6 +184,13 @@
         circularBar.textSize(textSize.value);
         textSizeA.value = textSize.value;
     });
+
+    var animValue = document.getElementById('animTo');
+    function animStart ()
+    {
+        circularBar.val(animValue.value, true, 100);
+    }
+
 
 </script>
 </html>
