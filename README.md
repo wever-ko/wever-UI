@@ -4,7 +4,7 @@ Javascript UI Components
 | *Circle Gauge* | *Half Circle Gauge* |
 | :------------- | :------------- |
 | ![circlegauge](./CircleGauge/docs/eximg.png) | ![halfcirclegauge](./HalfCircleGauge/docs/eximg.png) |
-|[code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circleGauge.html) |[code](./HalfCircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/halfCircleGauge.html) |
+|[code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circlegauge.html) |[code](./HalfCircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/halfCircleGauge.html) |
 
 ## to-do.  
 - [x] circular percentage bar
