@@ -1,4 +1,4 @@
-# ygUI. 
+# wever-UI. 
 Javascript UI Components
 
 | *Circle Gauge* | *Half Circle Gauge* |
