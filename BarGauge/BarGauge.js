@@ -43,8 +43,8 @@ var BarGauge = (function ()
     var defaults = {
     	width: 100,
     	height: 10,
-    	progressColor: "#000000",
-    	remainColor: "#FF0000",
+    	progressColor: "#4CAF50",
+    	backgroundColor: "#FF0000",
     	value: 50,         //percent value
     };
 
@@ -60,10 +60,10 @@ var BarGauge = (function ()
             'width': this._opts.width,
             'height': this._opts.height
         });
-    	this.remain = createSVGElem('rect', {
+    	this.background = createSVGElem('rect', {
     		'width': this._opts.width,
     		'height': this._opts.height,
-    		'fill': this._opts.remainColor
+    		'fill': this._opts.backgroundColor
     	});
         this.progress = createSVGElem('rect', {
             'width': this._opts.value,
@@ -71,7 +71,7 @@ var BarGauge = (function ()
             'fill': this._opts.progressColor
         })
     	target.appendChild(this.svg);
-    	this.svg.appendChild(this.remain);
+    	this.svg.appendChild(this.background);
         this.svg.appendChild(this.progress);
     }
 
@@ -88,7 +88,7 @@ var BarGauge = (function ()
         if (typeof width != "undefined") {
             this._opts.width = width;
             this.svg.setAttribute('width', width);
-            this.remain.setAttribute('width', width);
+            this.background.setAttribute('width', width);
             this.val(this._opts.value);
         }
         return this._opts.width;
@@ -98,7 +98,7 @@ var BarGauge = (function ()
         if (typeof height != "undefined") {
             this._opts.height = height;
             this.svg.setAttribute('height', height);
-            this.remain.setAttribute('height', height);
+            this.background.setAttribute('height', height);
             this.progress.setAttribute('height', height);
         }
         return this._opts.height;
@@ -110,6 +110,13 @@ var BarGauge = (function ()
             this.progress.setAttribute('fill', color);
         }
         return this._opts.progressColor;
+    }
+
+    BarGauge.prototype.backgroundColor = function (color) {
+        if (typeof color != "undefined") {
+            this._opts.backgroundColor = color;
+            this.background.setAttribute('fill', color);
+        }
     }
     return BarGauge;
 
