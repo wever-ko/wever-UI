@@ -54,12 +54,12 @@ var BarGauge = (function ()
     }
 
     BarGauge.prototype.create = function (target) {
-    	this.svg = createSVGElem('svg',
-    	{
+    	this.svg = createSVGElem('svg', {
             'xmlns': 'http://www.w3.org/2000/svg',
             'width': this._opts.width,
             'height': this._opts.height
         });
+
     	this.background = createSVGElem('rect', {
     		'width': this._opts.width,
     		'height': this._opts.height,
@@ -69,7 +69,7 @@ var BarGauge = (function ()
             'width': this._opts.value,
             'height': this._opts.height,
             'fill': this._opts.progressColor
-        })
+        });
     	target.appendChild(this.svg);
     	this.svg.appendChild(this.background);
         this.svg.appendChild(this.progress);
