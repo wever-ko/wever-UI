@@ -41,11 +41,12 @@ var BarGauge = (function ()
     }
 
     var defaults = {
-    	width: 100,
-    	height: 10,
-    	progressColor: "#4CAF50",
-    	backgroundColor: "#FF0000",
-    	value: 50,         //percent value
+    	width: 200,
+    	height: 30,
+    	progressColor: "#84cd99",
+    	backgroundColor: "#e5e5e5",
+        text: "%",
+    	value: 50         //percent value
     };
 
     function BarGauge(opts) {
@@ -118,6 +119,8 @@ var BarGauge = (function ()
             this.background.setAttribute('fill', color);
         }
     }
+
+
     return BarGauge;
 
 }());

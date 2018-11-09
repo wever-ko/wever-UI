@@ -29,7 +29,7 @@
 
         <div>
             <div class="attrName"> width: </div>
-            <input type="range" id="width" name="width" min = "10" max ="1000">
+            <input type="range" id="width" name="width" min = "10" max ="500">
             <a id="widthA"></a>
         </div>
         <div>
@@ -40,11 +40,11 @@
 
         <div>
             <div class="attrName"> value color: </div>
-            <input id = "valueColor" type="color" name="color" value="#3f87a6">
+            <input id = "valueColor" type="color" name="color" value="#84cd99">
         </div>
         <div>
             <div class="attrName"> background color: </div>
-            <input id = "bgColor" type="color" name="color" value="#FF0000">
+            <input id = "bgColor" type="color" name="color" value="#e5e5e5">
         </div>
     </div>
 </body>
@@ -98,6 +98,7 @@
     valueColor.addEventListener("change", function(){
         barGauge.progressColor(valueColor.value);
     });
+
     // background-Color
     var bgColor = document.getElementById('bgColor');
     bgColor.value = barGauge.backgroundColor();
