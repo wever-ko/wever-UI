@@ -1,4 +1,4 @@
-# CircleGauge
+# Bar Gauge
 
 ## Preview
 ![](./img/bar.gif)
