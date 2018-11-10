@@ -53,31 +53,43 @@ var RadarChart = (function ()
     {
         var path = [];
         var tradius = radius - unit * division;
-        for ( var i = 0; i < num; i++)
+        /*for ( var i = 0; i < num; i++)
         {
             var rad = (i / num) * Math.PI * 2;
             var M = "M";
                 M += (radius + (value ? value : tradius) * Math.sin(rad));
                 M += " ,";
                 M += (radius - (value ? value : tradius) * Math.cos(rad)); 
+            
             path.push(M);
 
             rad = ((i + 1) / num) * Math.PI * 2;
             var L = "L" + (radius + (value ? value : tradius) * Math.sin(rad)) + " ," + (radius - (value ? value : tradius) * Math.cos(rad)); 
+            
             path.push(L);
+        }*/
+        for (var i = 0; i < num; i++)
+        {
+            var rad = (i / num) * Math.PI * 2;
+            var M = (radius + (value ? value : tradius) * Math.sin(rad));
+                M += " ,";
+                M += (radius - (value ? value : tradius) * Math.cos(rad));
+            path.push(M);
         }
         return path.join(' ');
     }
 
-    function valuePath (radius, num, data)
+    function valuePath (radius, num, data, min, max)
     {
-        var path = [];
-        var arr = Object.values(data);
+        var path = [],
+            arr = Object.values(data);
         for( var i = 0; i < num; i++)
         {
             var rad = (i / num) * Math.PI * 2;
-            var M = (radius + arr[i] * Math.sin(rad)) + " ," + (radius - arr[i] * Math.cos(rad));
-            path.push(M); 
+            var M = (radius + (radius * (arr[i] - min) / (max - min)) * Math.sin(rad));
+                M += " ,";
+                M += (radius - (radius * (arr[i] - min) / (max - min)) * Math.cos(rad));
+            path.push(M);
         }
         return path.join(' ');
     }
@@ -96,20 +108,33 @@ var RadarChart = (function ()
         radius: 10,
         bgColor: '#ffffff',
         lineColor: '#000000',
+        division: 5,
+        max: 10,
+        min: 0,
+        axisWidth: 1,
+        axisColor: '#5ca284',
         inlineWidth: 1,
+        inlineColor: '#5ca284',
         outlineWidth: 2,
-        division: 5
+        outlineColor: '#5ca284',
+        datalineColor: '#ff0000',
+        datafillColor: '#FF0000'
     }
 
     function RadarChart (data, opts)
     {
         if (opts === void 0) { opts = {}; }
         this.opts = __assign({}, defaults, opts);
+        this.data = data;
     }
 
     RadarChart.prototype.create = function (target)
     {
         var o = this.opts;
+        var data = this.data;
+        var num = Object.keys(data).length;
+        console.log(num);
+        // Create svg
         this.svg = createSVGElem('svg', {
             'xmlns': 'http://www.w3.org/2000/svg',
             'width': o.radius * 2,
@@ -117,60 +142,186 @@ var RadarChart = (function ()
         });
         target.appendChild(this.svg);
 
+        // Create Bg
         this.bg = createSVGElem('rect', {'fill': o.bgColor, 'width': '100%', 'height': '100%' });
         this.svg.appendChild(this.bg);
         
-        this.createLines({'a' : 100, 'b': 70, 'v' : 100, 'c' : 80, 'd' : 50, 'f' : 20});
-        return this;
-    }
-
-    RadarChart.prototype.createLines = function (data)
-    {
-        var num = Object.keys(data).length,
-            o = this.opts;
-
-        this.data = data;
-        this.lines = [];
-
-        this.g = createSVGElem('g');
-        for(var i = 0; i < num; i++)
+        // Create Base Line
+        this.axis = [];
+        for (var i = 0; i < num; i++)
         {
-            var divline = createSVGElem('path', {
+            var _divline = createSVGElem('path', {
                 'fill': 'transparent',
-                'stroke': o.lineColor,
-                'stroke-width': o.inlineWidth,
-                'stroke-dasharray' : o.inlineWidth,
+                'stroke': o.axisColor,
+                'stroke-width': o.axisWidth,
+                'stroke-dasharray' : o.axisWidth,
                 'd': divPath(o.radius, num, i)
             });
-            this.svg.appendChild(divline);
+            this.svg.appendChild(_divline);
+            this.axis.push(_divline);
         }
 
-        for( var i = 0; i < o.division; i++)
+        this.baseLines = [];
+        for (var i = 0; i < o.division; i++)
         {
-            this.lines.push(
-                createSVGElem('path', {
+            var _baseline = createSVGElem('polygon', {
                     'fill': 'transparent',
                     'stroke': o.lineColor,
                     'stroke-width': i == 0 ? o.outlineWidth : o.inlineWidth,
                     'stroke-dasharray' : i == 0 ? 0 : o.inlineWidth,
-                    'd': radarPath(o.radius, num, o.radius / o.division, i)
-                }));
-            this.svg.appendChild(this.lines[i]);
+                    'points': radarPath(o.radius, num, o.radius / o.division, i)
+                });
+
+            this.svg.appendChild(_baseline);
+            this.baseLines.push(_baseline);
         }
 
-        this.vlines = [];
-        this.vline = createSVGElem('polygon', {
+        // Create Value lines
+        this.vLine = createSVGElem('polygon', {
             'fill': 'red',
             'stroke': 'red',
             'stroke-width': o.outlineWidth,
-            'points': valuePath(o.radius, num, data),
+            'points': valuePath(o.radius, num, data, o.min, o.max),
             'fill-rule': 'nonzero',
             "fill-opacity": "0.4"
         });
-        this.svg.appendChild(this.vline);
+        this.svg.appendChild(this.vLine);
+
+        return this;
     }
 
+    RadarChart.prototype.redrawLines = function (data)
+    {
+        var divNum = Object.keys(data).length,
+            o = this.opts;
 
+        // 중앙 -> 바깥 선
+        for (var i = 0; i < divNum; i++)
+        {
+            __attrs(this.axis[i], {'d': divPath(o.radius, divNum, i)});
+        }
+
+        // 나눔선
+        for (var i = 0; i < o.division; i++)
+        {
+            __attrs(this.baseLines[i], {'points': radarPath(o.radius, divNum, o.radius / o.division, i)});
+        }
+
+        // 값 선
+        __attrs(this.vLine, {'points': valuePath(o.radius, divNum, data, o.min, o.max)});
+    }
+
+    RadarChart.prototype.redrawTexts = function (data)
+    {
+
+    }
+
+    RadarChart.prototype.radius = function (r)
+    {
+        if (typeof r !== "undefined")
+        {
+            r = parseFloat(r);
+            this.opts.radius = r;
+            this.resize();
+        }
+        return this.opts.radius;
+    }
+
+    RadarChart.prototype.resize = function ()
+    {
+        var o = this.opts;
+        __attrs(this.svg, {'width': o.radius * 2, 'height': o.radius * 2});
+        this.redrawLines(this.data);
+    }
+
+    RadarChart.prototype.inLineWidth = function (w)
+    {
+        if (typeof w !== "undefined")
+        {
+            this.opts.inlineWidth = w;
+            for (var i = 1, len = this.baseLines.length; i < len; i++)
+            {
+                __attrs(this.baseLines[i], {'stroke-width': w, 'stroke-dasharray' : w});
+            }
+        }
+        return  this.opts.inlineWidth;
+    }
+
+    RadarChart.prototype.outLineWidth = function (w)
+    {
+        if (typeof w !== "undefined")
+        {
+            this.opts.outlineWidth = w;
+            __attrs(this.baseLines[0], {'stroke-width': w});
+        }
+        return this.opts.outlineWidth;
+    }
+
+    RadarChart.prototype.inLineColor = function (c)
+    {
+        if (typeof c !== "undefined")
+        {
+            this.opts.inlineColor = c;
+            for (var i = 1, len = this.baseLines.length; i < len; i++)
+            {
+                __attrs(this.baseLines[i], {'stroke': c});
+            }
+        }
+        return this.opts.inlineColor;
+    }
+
+    RadarChart.prototype.outLineColor = function (c)
+    {
+        if (typeof c !== "undefined")
+        {
+            this.opts.outlineColor = c;
+            __attrs(this.baseLines[0], {'stroke': c});
+        }
+        return this.opts.outlineColor;
+    }
+
+    RadarChart.prototype.dataLineColor = function (c)
+    {
+        if (typeof c !== "undefined")
+        {
+            this.opts.datalineColor = c;
+            __attrs(this.vLine, {'stroke': c});
+        }
+        return this.opts.datalineColor;
+    }
+
+    RadarChart.prototype.dataFillColor = function (c)
+    {
+        if (typeof c !== "undefined")
+        {
+            this.opts.datafillColor = c;
+            __attrs(this.vLine, {'fill': c});
+        }
+        return this.opts.datafillColor;
+    }
+
+    RadarChart.prototype.axisWidth = function (w)
+    {
+        if (typeof w !== "undefined")
+        {
+            this.opts.axisWidth = w;
+            for (var i = 0, len = this.axis.length; i < len; i++)
+            {
+                __attrs(this.axis[i], {'stroke-width': w, 'stroke-dasharray' : w});
+            }            
+        }
+        return this.opts.axisWidth;
+    }
+
+    RadarChart.prototype.bgColor = function (c)
+    {
+        if (typeof c !== "undefined")
+        {
+            this.opts.bgColor = c;
+            __attrs(this.bg, {'fill': c});
+        }
+        return this.opts.bgColor;
+    }
 
     return RadarChart;
 }());
