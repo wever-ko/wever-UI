@@ -1,10 +1,10 @@
 # wever-UI. 
 Javascript UI Components
 
-| *Circle Gauge* | *Half Circle Gauge* |
-| :------------- | :------------- |
-| ![circlegauge](./CircleGauge/docs/eximg.png) | ![halfcirclegauge](./HalfCircleGauge/docs/eximg.png) |
-|[code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circlegauge.html) |[code](./HalfCircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/halfCircleGauge.html) |
+| *Circle Gauge* | *Half Circle Gauge* |  *Radar Chart* |
+| :------------- | :------------- | :------------- |
+| ![circlegauge](./CircleGauge/docs/eximg.png) | ![halfcirclegauge](./HalfCircleGauge/docs/eximg.png) | ![radarchart](./RadarChart/docs/eximg.png) |
+|[code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circlegauge.html) |[code](./HalfCircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/halfCircleGauge.html) | [code](./RadarChart) <br> [examples]() |
 
 ## to-do.  
 - [x] Circle Gauge
