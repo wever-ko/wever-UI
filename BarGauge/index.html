@@ -34,8 +34,14 @@
         </div>
         <div>
             <div class="attrName"> height: </div>
-            <input type="range" id="height" name="height" min = "0" max ="50">
+            <input type="range" id="height" name="height" min = "0" max ="100">
             <a id="heightA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> progress bar radius: </div>
+            <input id = "barRadius" type = "range" name = "radius" min = "0" max = "50" >
+            <a id="radiusA"></a>
         </div>
 
         <div>
@@ -46,6 +52,7 @@
             <div class="attrName"> background color: </div>
             <input id = "bgColor" type="color" name="color" value="#e5e5e5">
         </div>
+
     </div>
 </body>
 <script type="text/javascript">
@@ -58,6 +65,8 @@
     // Value
     var pvalue = document.getElementById('value');
     pvalue.value = barGauge.val();
+
+    //barGauge.text(pvalue.value);
 
     var valueA = document.getElementById('valueA');
     valueA.innerHTML = barGauge.val();
@@ -91,6 +100,18 @@
         heightA.innerHTML = height.value;
     });
 
+    // radius
+    var rad = document.getElementById('barRadius');
+    rad.value = barGauge.radius();
+    console.log(rad.value);
+    var radiusA = document.getElementById('radiusA');
+    radiusA.innerHTML = rad.value;
+
+    rad.addEventListener('input', function(){
+        barGauge.radius(rad.value);
+        radiusA.innerHTML = rad.value;
+    });
+
     // valueColor
     var valueColor = document.getElementById('valueColor');
     valueColor.value = barGauge.progressColor();
@@ -106,7 +127,5 @@
     bgColor.addEventListener("change", function(){
         barGauge.backgroundColor(bgColor.value);
     });
-
-
 </script>
 </html>

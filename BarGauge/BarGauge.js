@@ -43,9 +43,12 @@ var BarGauge = (function ()
     var defaults = {
     	width: 200,
     	height: 30,
+        barRadius: 5,
     	progressColor: "#84cd99",
     	backgroundColor: "#e5e5e5",
         text: "%",
+        textColor: "#000000",
+        textSize: 10,
     	value: 50         //percent value
     };
 
@@ -60,7 +63,6 @@ var BarGauge = (function ()
             'width': this._opts.width,
             'height': this._opts.height
         });
-
     	this.background = createSVGElem('rect', {
     		'width': this._opts.width,
     		'height': this._opts.height,
@@ -69,11 +71,21 @@ var BarGauge = (function ()
         this.progress = createSVGElem('rect', {
             'width': this._opts.value,
             'height': this._opts.height,
-            'fill': this._opts.progressColor
+            'fill': this._opts.progressColor,
+            'rx': this._opts.barRadius,
+            'ry': this._opts.barRadius
+        });
+        this.textField = createSVGElem('text', {
+            'x': 0,
+            'y': 20,
+            'text-align': "center",
+            'font-size': this._opts.textSize,
+            'color': this._opts.textColor
         });
     	target.appendChild(this.svg);
     	this.svg.appendChild(this.background);
         this.svg.appendChild(this.progress);
+        this.svg.appendChild(this.textField);
     }
 
 
@@ -81,6 +93,7 @@ var BarGauge = (function ()
         if (typeof value != "undefined") {
             var w = this._opts.width / 100 * value;
             this.progress.setAttribute('width', w);
+            this.text(this._opts.value);
         }
         return this._opts.value;
     }
@@ -120,7 +133,23 @@ var BarGauge = (function ()
         }
     }
 
+    /*
+    BarGauge.prototype.text = function (string) {
+        if (typeof string != "undefined") {
+            this.textField.textContent = this._opts.value + "%";
+        }
+        return this.textField.textContent;
+    }
+    */
 
+    BarGauge.prototype.radius = function (rad) {
+        if (typeof rad != "undefined") {
+            this._opts.barRadius = rad;
+            this.progress.setAttribute('rx', rad);
+            this.progress.setAttribute('ry', rad);
+        }
+        return this._opts.barRadius;
+    }
     return BarGauge;
 
 }());
