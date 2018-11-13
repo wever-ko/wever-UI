@@ -24,14 +24,14 @@ var CircleGauge = (function ()
     /**
      * @private
      * @method
-     * @param {ElementObject} elem 속성을 설정할 엘리먼트
-     * @param {Object} attrs 설정할 속성
+     * @param {ElementObject} e 속성을 설정할 엘리먼트
+     * @param {Object} atrs 설정할 속성
      */
-    function __attrs (elem, attrs)
+    function __attrs (e, atrs)
     {
-        for (var a in attrs)
+        for (var a in atrs)
         {
-            elem.setAttribute(a, attrs[a]);
+            e.setAttribute(a, atrs[a]);
         }
     }
 
@@ -79,24 +79,24 @@ var CircleGauge = (function ()
      * @private
      * @function
      * 재 계산된 svg 크기 반환
-     * @param {Object} opts svg 크기를 재 계산할 옵션
+     * @param {Object} o svg 크기를 재 계산할 옵션
      * @returns {Number}
      */
-    function svgsz (opts)
+    function svgsz (o)
     {
-      return opts.radius * 2 + ((opts.lineWidth > opts.emptyLineWidth) ? (opts.lineWidth) : (opts.emptyLineWidth));     
+      return o.radius * 2 + ((o.lineWidth > o.emptyLineWidth) ? (o.lineWidth) : (o.emptyLineWidth));     
     }
 
     /**
      * @private
      * @function
      * 재 계산된 offset 반환
-     * @param {Object} opts offset 을 재 계산할 옵션
+     * @param {Object} o offset 을 재 계산할 옵션
      * @returns {Number}
      */
-    function offset (opts)
+    function offset (o)
     {
-        return (((opts.lineWidth > opts.emptyLineWidth) ? (opts.lineWidth) : (opts.emptyLineWidth))) / 2;
+        return (((o.lineWidth > o.emptyLineWidth) ? (o.lineWidth) : (o.emptyLineWidth))) / 2;
     }
 
     /**
@@ -122,7 +122,7 @@ var CircleGauge = (function ()
      * @constructor
      * @param {Object} opts
      */
-    function CircleGauge(opts)
+    function CircleGauge (opts)
     {
         if (opts === void 0) { opts = {}; }
         this._opts = __assign({}, defaults, opts);
@@ -203,9 +203,10 @@ var CircleGauge = (function ()
      * @param {Number} percentage 설정할 퍼센티지 값
      * @param {Boolean} animation 애니메이션 여부
      * @param {Number} mseconds 에니메이션을 실행시킬 시간
+     * @param {Function} cb 애니메이션 끝 콜백 함수
      * @return {Number}
      */
-    CircleGauge.prototype.val = function (percentage, anim, mseconds)
+    CircleGauge.prototype.val = function (percentage, anim, mseconds, cb)
     {
         if (typeof percentage !== "undefined")
         {
@@ -227,6 +228,10 @@ var CircleGauge = (function ()
                         _this._opts.percentage = destPercentage;
                         _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, ofs, ofs));
                         clearInterval(itv);
+                        if( typeof cb === "function")
+                        {
+                            cb();
+                        }
                     }
                     _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, ofs, ofs));
                    
@@ -307,14 +312,14 @@ var CircleGauge = (function ()
      * @public
      * @method
      * 퍼센티지를 나타내는 라인의 굵기를 설정한다.
-     * @param {Number} width 설정할 크기값
+     * @param {Number} w 설정할 크기값
      * @return {Number | String}
      */
-    CircleGauge.prototype.lineWidth = function (width)
+    CircleGauge.prototype.lineWidth = function (w)
     {
-        if(typeof width !== "undefined")
+        if(typeof w !== "undefined")
         {
-            this._opts.lineWidth = parseFloat(width);
+            this._opts.lineWidth = parseFloat(w);
             this.resize();
         }
         return this._opts.lineWidth;
@@ -342,7 +347,7 @@ var CircleGauge = (function ()
      * @method
      * 퍼센티지 이외 부분의 굵기를 설정한다.
      * @param {Number} width 설정할 굵기 값
-     * @return {Number}
+     * @return {Number} 현재 width 반환
      */
     CircleGauge.prototype.emptyLineWidth = function (width)
     {
@@ -359,7 +364,7 @@ var CircleGauge = (function ()
      * @method
      * 퍼센티지 이외 부분의 색상을 설정한다.
      * @param {String} color 설정할 색상 값
-     * @return {String}
+     * @return {String} 현재 이외 부분 color 반환
      */
     CircleGauge.prototype.emptyLineColor = function (color)
     {   
@@ -376,7 +381,7 @@ var CircleGauge = (function ()
      * @method
      * 배경 색을 설정한다.
      * @param {String} color 설정할 색상 값
-     * @return {String}
+     * @return {String} 현재 color 반환
      */
     CircleGauge.prototype.bgColor = function (color)
     {
@@ -393,7 +398,7 @@ var CircleGauge = (function ()
      * @method
      * 반경을 설정한다.
      * @param {Number} radius 설정할 반경
-     * @return {Number}
+     * @return {Number} 현재 radius 반환
      */
     CircleGauge.prototype.radius = function (radius)
     {
@@ -419,7 +424,7 @@ var CircleGauge = (function ()
         __attrs(this.svg, {'width': svgSize, 'height': svgSize});
         __attrs(this._path, {'stroke-width': opts.lineWidth,'d': arcPath(this._start, opts.percentage, opts.radius, ofs, ofs)});
         __attrs(this._emptypath, {'stroke-width': opts.emptyLineWidth,'d': arcPath(this._start, 99.99, opts.radius, ofs, ofs)});
-        __attrs(this._text, {'x': svgSize / 2,'y': svgSize / 2 + opts.textSize / 2});
+        __attrs(this._text, {'x': svgSize / 2,'y': (svgSize + opts.textSize) / 2});
     }
 
     return CircleGauge;
