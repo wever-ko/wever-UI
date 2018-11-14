@@ -25,5 +25,5 @@ require(['path/to/circleGauge.js'], function (Gauge) {
 ## Examples
 [CircleGauge Examples](https://yeonjuan.github.io/ygui/circlegauge.html)
 ## Docs
-[CircleGauge API docs](./DOC.md)
+[CircleGauge API docs](https://github.com/yeonjuan/wever-UI/wiki/CircleGauge)
 
