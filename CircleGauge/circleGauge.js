@@ -2,7 +2,7 @@
  * @author Yeon Ju An
  * CircleGauge
  */
-var CircleGauge = (function ()
+var CircleGauge = (function (global)
 {
     /**
      * @private
@@ -24,14 +24,14 @@ var CircleGauge = (function ()
     /**
      * @private
      * @method
-     * @param {ElementObject} elem 속성을 설정할 엘리먼트
-     * @param {Object} attrs 설정할 속성
+     * @param {ElementObject} e 속성을 설정할 엘리먼트
+     * @param {Object} atrs 설정할 속성
      */
-    function __attrs (elem, attrs)
+    function __attrs (e, atrs)
     {
-        for (var a in attrs)
+        for (var a in atrs)
         {
-            elem.setAttribute(a, attrs[a]);
+            e.setAttribute(a, atrs[a]);
         }
     }
 
@@ -41,37 +41,40 @@ var CircleGauge = (function ()
      * Create svg emelemt
      * @param {String} which 생성할 엘리먼트 종류(svg)
      * @param {Object} attrs 설정할 속성
+     * @param {Object} to 
      */
-    function createSVGElem (which, attrs)
+    function createSVGElem (which, attrs, to)
     {
         var el = document.createElementNS('http://www.w3.org/2000/svg', which);
         __attrs(el, attrs);
+        if (to !== void 0)
+            to.appendChild(el);
         return el;
     }
 
     /**
      * @private
      * @function
-     * @param {Number} start 시작 radial 값
-     * @param {Number} percentage 설정할 퍼센티지 값
-     * @param {Number} radius 반경
+     * @param {Number} st 시작 radial 값
+     * @param {Number} p 설정할 퍼센티지 값
+     * @param {Number} r 반경
      * @param {Number} x offset x 값
      * @param {Number} y offset y 값
      */
-    function arcPath (start, percentage, radius, x, y) {
-        if (percentage >= 100) percentage = 99.99;
-        var end = start + (percentage / 100) * ((Math.PI / 180 * 270) - start);
+    function arcPath (st, p, r, x, y) {
+        if (p >= 100) p = 99.99;
+        var e = st + (p / 100) * ((Math.PI / 2 * 3) - st);
         
         return [    
                 'M',
-                radius + x + radius * Math.cos(start),
-                radius + y + radius * Math.sin(start),
+                r + x + r * Math.cos(st),
+                r + y + r * Math.sin(st),
                 'A',
-                radius, radius, 0,
-                percentage > 50 ? 1 : 0,
+                r, r, 0,
+                p > 50 ? 1 : 0,
                 1,
-                radius + x + radius * Math.cos(end),
-                radius + y + radius * Math.sin(end)
+                r + x + r * Math.cos(e),
+                r + y + r * Math.sin(e)
             ].join(' ');
     }
 
@@ -79,24 +82,24 @@ var CircleGauge = (function ()
      * @private
      * @function
      * 재 계산된 svg 크기 반환
-     * @param {Object} opts svg 크기를 재 계산할 옵션
+     * @param {Object} o svg 크기를 재 계산할 옵션
      * @returns {Number}
      */
-    function svgsz (opts)
+    function svgsz (o)
     {
-      return opts.radius * 2 + ((opts.lineWidth > opts.emptyLineWidth) ? (opts.lineWidth) : (opts.emptyLineWidth));     
+      return o.radius * 2 + ((o.lineWidth > o.emptyLineWidth) ? (o.lineWidth) : (o.emptyLineWidth));     
     }
 
     /**
      * @private
      * @function
      * 재 계산된 offset 반환
-     * @param {Object} opts offset 을 재 계산할 옵션
+     * @param {Object} o offset 을 재 계산할 옵션
      * @returns {Number}
      */
-    function offset (opts)
+    function offset (o)
     {
-        return (((opts.lineWidth > opts.emptyLineWidth) ? (opts.lineWidth) : (opts.emptyLineWidth))) / 2;
+        return (((o.lineWidth > o.emptyLineWidth) ? (o.lineWidth) : (o.emptyLineWidth))) / 2;
     }
 
     /**
@@ -109,7 +112,7 @@ var CircleGauge = (function ()
         lineColor: '#E63462', 
         lineWidth: 5,
         radius: 50,
-        percentage: 0,
+        value: 0,
         textColor: '#ff0000',
         textSize: 12,
         showText: true,
@@ -122,7 +125,7 @@ var CircleGauge = (function ()
      * @constructor
      * @param {Object} opts
      */
-    function CircleGauge(opts)
+    function CircleGauge (opts)
     {
         if (opts === void 0) { opts = {}; }
         this._opts = __assign({}, defaults, opts);
@@ -134,65 +137,61 @@ var CircleGauge = (function ()
      * 그래프 생성
      * @param {ElementObject} target 그래프를 생성할 타겟
      */
-    CircleGauge.prototype.create = function (target)
+    CircleGauge.prototype.create = function (t)
     {
-        var opts = this._opts;
+        var o = this._opts;
 
         // Size of SVG
-        var svgSize = svgsz(opts);
+        var sz = svgsz(o);
        
         // Create SVG
         this.svg = createSVGElem('svg',{
             'xmlns': 'http://www.w3.org/2000/svg',
-            'width': svgSize,
-            'height': svgSize
+            'width': sz,
+            'height': sz
         });
         
         // Create Background Rect
         this._bg = createSVGElem('rect',
         {
-            'fill': opts.bgColor,
+            'fill': o.bgColor,
             'width': '100%',
             'height': '100%'
-        });
-        this.svg.appendChild(this._bg);
-
-        this._start = (-Math.PI / 180 * 90);
-        this._end = this._start + (opts.percentage / 100) * ((Math.PI / 180 * 270) - this._start);
+        }, this.svg);
+    
+        this._start = (-Math.PI / 2);
+        this._end = this._start + (o.value / 100) * ((Math.PI / 2 * 3) - this._start);
 
         // Create Empty Path
         this._emptypath = createSVGElem('path',
         {
             'fill': 'transparent',
-            'stroke': opts.emptyLineColor,
-            'stroke-width': opts.emptyLineWidth,
-            'd': arcPath(this._start, 99.99, opts.radius, opts.emptyLineWidth / 2, opts.emptyLineWidth / 2)
-        });
-        this.svg.appendChild(this._emptypath);
+            'stroke': o.emptyLineColor,
+            'stroke-width': o.emptyLineWidth,
+            'd': arcPath(this._start, 99.99, o.radius, o.emptyLineWidth / 2, o.emptyLineWidth / 2)
+        }, this.svg);
+       // this.svg.appendChild(this._emptypath);
 
         // Create Path
         this._path = createSVGElem('path',
         {
             'fill': 'transparent',
-            'stroke': opts.lineColor,
-            'stroke-width': opts.lineWidth,
-            'd': arcPath(this._start, opts.percentage, opts.radius, opts.lineWidth / 2, opts.lineWidth / 2)
-        });
-        this.svg.appendChild(this._path);
-
+            'stroke': o.lineColor,
+            'stroke-width': o.lineWidth,
+            'd': arcPath(this._start, o.value, o.radius, o.lineWidth / 2, o.lineWidth / 2)
+        }, this.svg);
+     
         // Create Path
         this._text = createSVGElem('text',
         {
-            'fill': opts.textColor,
-             'x': svgSize / 2,
-             'y': svgSize / 2 + opts.textSize / 2,
+            'fill': o.textColor,
+             'x': sz / 2,
+             'y': sz / 2 + o.textSize / 2,
              'text-anchor': 'middle',
-             'font-size': opts.textSize
-        });
+             'font-size': o.textSize
+        }, this.svg);
 
-        this.svg.appendChild(this._text);
-
-        target.appendChild(this.svg);
+        t.appendChild(this.svg);
         return this;
     }
 
@@ -200,35 +199,40 @@ var CircleGauge = (function ()
      * @public
      * @method
      * 퍼센티지 값 설정 / 반환
-     * @param {Number} percentage 설정할 퍼센티지 값
+     * @param {Number} value 설정할 퍼센티지 값
      * @param {Boolean} animation 애니메이션 여부
      * @param {Number} mseconds 에니메이션을 실행시킬 시간
+     * @param {Function} cb 애니메이션 끝 콜백 함수
      * @return {Number}
      */
-    CircleGauge.prototype.val = function (percentage, anim, mseconds)
+    CircleGauge.prototype.val = function (p, anim, msec, cb)
     {
-        if (typeof percentage !== "undefined")
+        if (typeof p !== "undefined")
         {
-            var opts = this._opts;
-            var _this = this;
-            percentage = parseFloat(percentage);
+            var opts = this._opts,
+                _this = this;
+            p = parseFloat(p);
             var ofs = offset(opts);
 
             if (anim)
             {
-                var destPercentage = percentage,
-                    unit = (destPercentage - opts.percentage) / mseconds;
+                var dv = p,
+                    unit = (dv - opts.value) / msec;
 
                 var itv = setInterval(function ()
                 {
-                    _this._opts.percentage += unit;
-                    if (Math.abs(_this._opts.percentage - destPercentage) <= (2 * Math.abs(unit)))
+                    _this._opts.value += unit;
+                    if (Math.abs(_this._opts.value - dv) <= (2 * Math.abs(unit)))
                     {
-                        _this._opts.percentage = destPercentage;
-                        _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, ofs, ofs));
+                        _this._opts.value = dv;
+                        _this._path.setAttribute('d', arcPath(_this._start, _this._opts.value, _this._opts.radius, ofs, ofs));
                         clearInterval(itv);
+                        if( typeof cb === "function")
+                        {
+                            cb();
+                        }
                     }
-                    _this._path.setAttribute('d', arcPath(_this._start, _this._opts.percentage, _this._opts.radius, ofs, ofs));
+                    _this._path.setAttribute('d', arcPath(_this._start, _this._opts.value, _this._opts.radius, ofs, ofs));
                    
                     if (typeof _this.step === "function")
                     {
@@ -237,16 +241,16 @@ var CircleGauge = (function ()
                 }, 1);
                 return;
             }
-            this._opts.percentage = percentage;
+            this._opts.value = p;
             
             if (typeof _this.step === "function")
             {
                 _this.step();
             }
-            this._path.setAttribute('d', arcPath(this._start, this._opts.percentage, this._opts.radius, ofs, ofs));                 
+            this._path.setAttribute('d', arcPath(this._start, this._opts.value, this._opts.radius, ofs, ofs));                 
         }
 
-        return this._opts.percentage;
+        return this._opts.value;
     }
 
     /**
@@ -256,11 +260,11 @@ var CircleGauge = (function ()
      * @param {String} str 설정할 text 값
      * @return {String}
      */
-    CircleGauge.prototype.text = function (str)
+    CircleGauge.prototype.text = function (s)
     {
-        if(typeof str !== "undefined")
+        if(s !== void 0)
         {
-            this._text.textContent = str;
+            this._text.textContent = s;
         }
         return this._text.textContent;
     }
@@ -272,12 +276,12 @@ var CircleGauge = (function ()
      * @param {String} color 설정할 색상값
      * @return {String}
      */
-    CircleGauge.prototype.textColor = function (color)
+    CircleGauge.prototype.textColor = function (c)
     {
-        if(typeof color !== "undefined")
+        if(typeof c !== "undefined")
         {
-            this._opts.textColor = color;
-            this._text.setAttribute('fill', color);
+            this._opts.textColor = c;
+            this._text.setAttribute('fill', c);
         }
         return this._opts.textColor;
     }
@@ -289,16 +293,16 @@ var CircleGauge = (function ()
      * @param {Number | String} size 설정할 크기값
      * @return {Number | String}
      */
-    CircleGauge.prototype.textSize = function (size)
+    CircleGauge.prototype.textSize = function (s)
     {
-        if(typeof size !== "undefined")
+        if(typeof s !== "undefined")
         {
-            this._opts.textSize = size;
-            var opts = this._opts,
-                ofs = offset(opts),
-                svgSize = svgsz(opts);
-            this._text.setAttribute('font-size', size);
-            __attrs(this._text, {'x': svgSize / 2,'y': svgSize / 2 + opts.textSize / 2});           
+            this._opts.textSize = s;
+            var o = this._opts,
+                ofs = offset(o),
+                sz = svgsz(o);
+            this._text.setAttribute('font-size', s);
+            __attrs(this._text, {'x': sz / 2,'y': sz / 2 + o.textSize / 2});           
         }
         return this._opts.textSize;
     }
@@ -307,14 +311,14 @@ var CircleGauge = (function ()
      * @public
      * @method
      * 퍼센티지를 나타내는 라인의 굵기를 설정한다.
-     * @param {Number} width 설정할 크기값
+     * @param {Number} w 설정할 크기값
      * @return {Number | String}
      */
-    CircleGauge.prototype.lineWidth = function (width)
+    CircleGauge.prototype.lineWidth = function (w)
     {
-        if(typeof width !== "undefined")
+        if(typeof w !== "undefined")
         {
-            this._opts.lineWidth = parseFloat(width);
+            this._opts.lineWidth = parseFloat(w);
             this.resize();
         }
         return this._opts.lineWidth;
@@ -327,12 +331,12 @@ var CircleGauge = (function ()
      * @param {String} color 설정할 색상값
      * @return {Number | String}
      */
-    CircleGauge.prototype.lineColor = function (color)
+    CircleGauge.prototype.lineColor = function (c)
     {
-        if(typeof color !== "undefined")
+        if(typeof c !== "undefined")
         {
-            this._opts.lineColor = color;
-            this._path.setAttribute('stroke', color);           
+            this._opts.lineColor = c;
+            this._path.setAttribute('stroke', c);           
         }
         return this._opts.lineColor;
     } 
@@ -342,13 +346,13 @@ var CircleGauge = (function ()
      * @method
      * 퍼센티지 이외 부분의 굵기를 설정한다.
      * @param {Number} width 설정할 굵기 값
-     * @return {Number}
+     * @return {Number} 현재 width 반환
      */
-    CircleGauge.prototype.emptyLineWidth = function (width)
+    CircleGauge.prototype.emptyLineWidth = function (w)
     {
-        if(typeof width !== "undefined")
+        if(typeof w !== "undefined")
         {
-            this._opts.emptyLineWidth = parseFloat(width);
+            this._opts.emptyLineWidth = parseFloat(w);
             this.resize();           
         }
         return this._opts.emptyLineWidth;
@@ -359,14 +363,14 @@ var CircleGauge = (function ()
      * @method
      * 퍼센티지 이외 부분의 색상을 설정한다.
      * @param {String} color 설정할 색상 값
-     * @return {String}
+     * @return {String} 현재 이외 부분 color 반환
      */
-    CircleGauge.prototype.emptyLineColor = function (color)
+    CircleGauge.prototype.emptyLineColor = function (c)
     {   
-        if(typeof color !== "undefined")
+        if(typeof c !== "undefined")
         {
-            this._opts.emptyLineColor = color;
-            this._emptypath.setAttribute('stroke', color);
+            this._opts.emptyLineColor = c;
+            this._emptypath.setAttribute('stroke', c);
         }
         return this._opts.emptyLineColor;
     }       
@@ -376,14 +380,14 @@ var CircleGauge = (function ()
      * @method
      * 배경 색을 설정한다.
      * @param {String} color 설정할 색상 값
-     * @return {String}
+     * @return {String} 현재 color 반환
      */
-    CircleGauge.prototype.bgColor = function (color)
+    CircleGauge.prototype.bgColor = function (c)
     {
-        if(typeof color !== "undefined")
+        if(typeof c !== "undefined")
         {
-            this._opts.bgColor = color;
-            __attrs(this._bg, {fill : color});
+            this._opts.bgColor = c;
+            __attrs(this._bg, {fill : c});
         }
         return this._opts.bgColor;
     }
@@ -393,13 +397,13 @@ var CircleGauge = (function ()
      * @method
      * 반경을 설정한다.
      * @param {Number} radius 설정할 반경
-     * @return {Number}
+     * @return {Number} 현재 radius 반환
      */
-    CircleGauge.prototype.radius = function (radius)
+    CircleGauge.prototype.radius = function (r)
     {
-        if(typeof radius !== "undefined")
+        if(typeof r !== "undefined")
         {
-            this._opts.radius = parseFloat(radius);
+            this._opts.radius = parseFloat(r);
             this.resize();            
         }
         return this._opts.radius;
@@ -412,15 +416,25 @@ var CircleGauge = (function ()
      */
     CircleGauge.prototype.resize = function ()
     {
-        var opts = this._opts,
-            ofs = offset(opts),
-            svgSize = svgsz(opts);
+        var o = this._opts,
+            ofs = offset(o),
+            sz = svgsz(o);
 
-        __attrs(this.svg, {'width': svgSize, 'height': svgSize});
-        __attrs(this._path, {'stroke-width': opts.lineWidth,'d': arcPath(this._start, opts.percentage, opts.radius, ofs, ofs)});
-        __attrs(this._emptypath, {'stroke-width': opts.emptyLineWidth,'d': arcPath(this._start, 99.99, opts.radius, ofs, ofs)});
-        __attrs(this._text, {'x': svgSize / 2,'y': svgSize / 2 + opts.textSize / 2});
+        __attrs(this.svg, {'width': sz, 'height': sz});
+        __attrs(this._path, {'stroke-width': o.lineWidth,'d': arcPath(this._start, o.value, o.radius, ofs, ofs)});
+        __attrs(this._emptypath, {'stroke-width': o.emptyLineWidth,'d': arcPath(this._start, 99.99, o.radius, ofs, ofs)});
+        __attrs(this._text, {'x': sz / 2,'y': (sz + o.textSize) / 2});
+    }
+
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = CircleGauge;
+    } else if (typeof define === 'function' && define.amd) {
+        define([], function(){
+            return CircleGauge;
+        });
+    } else {
+        global.CircleGauge = CircleGauge;
     }
 
     return CircleGauge;
-}());
+}(this.window || global));

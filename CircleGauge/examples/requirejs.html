@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src = "require.js"></script>
+</head>
+<body>
+	<div id = 'test'>
+	</div>
+</body>
+<script type="text/javascript">
+	
+	require(['../circleGauge.js'], function (Gage) {
+	
+		var target = document.getElementById('test');
+		var circularBar = new Gage({
+        	lineWidth : 40,
+        	value: 70,
+        	radius : 50,
+        	lineColor: '#5ca284',
+        	bgColor : '#ffffff',
+        	emptyLineColor: '#afdcc9',
+        	showText: true,
+        	lineWidth: 25,
+        	emptyLineWidth: 25,
+        	textColor : '#07472C'
+    	}).create(target);
+
+	});
+</script>
+</html>
