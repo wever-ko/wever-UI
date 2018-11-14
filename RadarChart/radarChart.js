@@ -53,21 +53,7 @@ var RadarChart = (function ()
     {
         var path = [];
         var tradius = radius - unit * division;
-        /*for ( var i = 0; i < num; i++)
-        {
-            var rad = (i / num) * Math.PI * 2;
-            var M = "M";
-                M += (radius + (value ? value : tradius) * Math.sin(rad));
-                M += " ,";
-                M += (radius - (value ? value : tradius) * Math.cos(rad)); 
-            
-            path.push(M);
 
-            rad = ((i + 1) / num) * Math.PI * 2;
-            var L = "L" + (radius + (value ? value : tradius) * Math.sin(rad)) + " ," + (radius - (value ? value : tradius) * Math.cos(rad)); 
-            
-            path.push(L);
-        }*/
         for (var i = 0; i < num; i++)
         {
             var rad = (i / num) * Math.PI * 2;
@@ -133,7 +119,7 @@ var RadarChart = (function ()
         var o = this.opts;
         var data = this.data;
         var num = Object.keys(data).length;
-        console.log(num);
+
         // Create svg
         this.svg = createSVGElem('svg', {
             'xmlns': 'http://www.w3.org/2000/svg',
@@ -213,7 +199,7 @@ var RadarChart = (function ()
 
     RadarChart.prototype.redrawTexts = function (data)
     {
-
+        
     }
 
     RadarChart.prototype.radius = function (r)
