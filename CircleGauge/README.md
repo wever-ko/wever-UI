@@ -12,15 +12,14 @@ html
 javascript
 ```javascript
 var target = document.getElementById('target');
-var circularBar = new CircleGauge().create(target);
+var circleGauge = new CircleGauge().create(target);
 ```
-with requireJs
+requireJS
 ```javascript
-	require(['../circleGauge.js'], function (Gage) {
-	
-		var target = document.getElementById('test');
-		var circularBar = new Gage().create(target);
-	});
+require(['path/to/circleGauge.js'], function (Gauge) {
+	var target = document.getElementById('test');
+	var circleGauge = new Gauge().create(target);
+});
 ```
 
 ## Examples
