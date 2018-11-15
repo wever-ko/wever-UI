@@ -66,86 +66,86 @@
 
     var target = document.getElementById('test');
 
-    var barGauge = new BarGauge();
-    barGauge.create(target);
+    var progressBar = new ProgressBar();
+    progressBar.create(target);
 
     // Value
     var pvalue = document.getElementById('value');
-    pvalue.value = barGauge.val();
+    pvalue.value = progressBar.val();
 
-    barGauge.text(pvalue.value);
+    progressBar.text(pvalue.value);
     var valueA = document.getElementById('valueA');
-    valueA.innerHTML = barGauge.val();
+    valueA.innerHTML = progressBar.val();
 
     pvalue.addEventListener('input', function() {
-        barGauge.val(pvalue.value);
+        progressBar.val(pvalue.value);
         valueA.innerHTML = pvalue.value;
     });
 
     //  width
     var width = document.getElementById('width');
-    width.value = barGauge.width();
+    width.value = progressBar.width();
 
     var widthA = document.getElementById('widthA');
     widthA.innerHTML = width.value;
 
     width.addEventListener('input', function() {
-        barGauge.width(width.value);
+        progressBar.width(width.value);
         widthA.innerHTML = width.value;
     });
 
     // height
     var height = document.getElementById('height');
-    height.value = barGauge.height();
+    height.value = progressBar.height();
 
     var heightA = document.getElementById('heightA');
     heightA.innerHTML = height.value;
 
     height.addEventListener('input', function(){
-        barGauge.height(height.value);
+        progressBar.height(height.value);
         heightA.innerHTML = height.value;
     });
 
     // radius
     var rad = document.getElementById('barRadius');
-    rad.value = barGauge.radius();
+    rad.value = progressBar.radius();
     var radiusA = document.getElementById('radiusA');
     radiusA.innerHTML = rad.value;
 
     rad.addEventListener('input', function(){
-        barGauge.radius(rad.value);
+        progressBar.radius(rad.value);
         radiusA.innerHTML = rad.value;
     });
 
     // valueColor
     var valueColor = document.getElementById('valueColor');
-    valueColor.value = barGauge.progressColor();
+    valueColor.value = progressBar.progressColor();
 
     valueColor.addEventListener("change", function(){
-        barGauge.progressColor(valueColor.value);
+        progressBar.progressColor(valueColor.value);
     });
 
     // background-Color
     var bgColor = document.getElementById('bgColor');
-    bgColor.value = barGauge.backgroundColor();
+    bgColor.value = progressBar.backgroundColor();
 
     bgColor.addEventListener("change", function(){
-        barGauge.backgroundColor(bgColor.value);
+        progressBar.backgroundColor(bgColor.value);
     });
 
     //text color
     var txtColor = document.getElementById('txtColor');
-    txtColor.value = barGauge.textColor();
+    txtColor.value = progressBar.textColor();
 
     txtColor.addEventListener("change", function(){
-        barGauge.textColor(txtColor.value);
+        progressBar.textColor(txtColor.value);
     });
 
     var txtSize = document.getElementById('txtSize');
-    txtSize.value = barGauge.textSize();
+    txtSize.value = progressBar.textSize();
 
     txtSize.addEventListener("input", function(){
-        barGauge.textSize(txtSize.value);
+        progressBar.textSize(txtSize.value);
     });
 </script>
 </html>
