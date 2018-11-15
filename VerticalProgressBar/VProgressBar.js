@@ -82,7 +82,7 @@ var VProgressBar = (function ()
             'text-anchor': "middle",
             'alignment-baseline':"central",
             'font-size': this._opts.textSize,
-            'color': this._opts.textColor
+            'fill': this._opts.textColor
         });
         this.textField.textContent = "";
     	target.appendChild(this.svg);
@@ -160,7 +160,7 @@ var VProgressBar = (function ()
     VProgressBar.prototype.textColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.textColor = color;
-            this.textField.setAttribute('color', color);
+            this.textField.setAttribute('fill', color);
         }
         return this._opts.textColor;
     }
