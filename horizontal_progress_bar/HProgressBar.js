@@ -76,8 +76,8 @@ var HProgressBar = (function ()
             'ry': this._opts.barRadius
         });
         this.textField = createSVGElem('text', {
-            'x': this._opts.value/2,
-            'y': this._opts.height/2,
+            'x': this._opts.value / 2,
+            'y': this._opts.height / 2,
             'text-anchor': "middle",
             'alignment-baseline':"central",
             'font-size': this._opts.textSize,
@@ -142,9 +142,7 @@ var HProgressBar = (function ()
         if (typeof value != "undefined") {
             //console.log(this._opts.value);
             this.textField.textContent = value+"%";
-            this.textField.setAttribute('x', this._opts.width/2);
-            this.textField.setAttribute('y', this._opts.height/2);
-
+            __attrs(this.textField, {'x': this._opts.width / 2, 'y': this._opts.height / 2});
         }
         return this.textField.textContent;
     }
@@ -152,8 +150,7 @@ var HProgressBar = (function ()
     HProgressBar.prototype.radius = function (rad) {
         if (typeof rad != "undefined") {
             this._opts.barRadius = rad;
-            this.progress.setAttribute('rx', rad);
-            this.progress.setAttribute('ry', rad);
+            __attrs(this.textField, {'rx': rad, 'ry': rad});
         }
         return this._opts.barRadius;
     }
