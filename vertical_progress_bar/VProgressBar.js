@@ -152,7 +152,7 @@ var VProgressBar = (function ()
     VProgressBar.prototype.radius = function (rad) {
         if (typeof rad != "undefined") {
             this._opts.barRadius = rad;
-            __attrs(this.progress {'rx': rad, 'ry': rad});
+            __attrs(this.progress, {'rx': rad, 'ry': rad});
         }
         return this._opts.barRadius;
     }
