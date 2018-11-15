@@ -1,4 +1,4 @@
-# Bar Gauge
+# Horizontal Progress Bar
 
 ## Preview
 ![](./img/ProgressBar_Horizontal.gif)
@@ -6,19 +6,19 @@
 
 html
 ```html
-<script src="path/to/circleGauge.js"></script>
+<script src="path/to/ProgressBar.js"></script>
 
 <div id = 'target'></div>
 ```
 javascript
 ```javascript
 var target = document.getElementById('target');
-var circularBar = new CircleGauge().create(target);
+var progressBar = new ProgressBar().create(target);
 ```
 ## Examples
-[CircleGauge Examples](https://yeonjuan.github.io/ygui/circlegauge.html)
+[ProgressBar Examples](index.html)
 ## Docs
-[CircleGauge API docs](./DOC.md)
+[ProgressBar API docs](./DOC.md)
 
 ## Browsers support
 
