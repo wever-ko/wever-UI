@@ -16,7 +16,7 @@ var target = document.getElementById('target');
 var progressBar = new ProgressBar().create(target);
 ```
 ## Examples
-[ProgressBar Examples](index.html)
+[ProgressBar Examples](https://jgy1435.github.io/weverui/progressbar.html)
 ## Docs
 [ProgressBar API docs](./DOC.md)
 
