@@ -1,8 +1,8 @@
 /**
  * @author guyeoljeong
- * BarGauge UI
+ * ProgressBar UI
  */
-var BarGauge = (function ()
+var ProgressBar = (function ()
 {
     var __assign = (this && this.__assign) || function () {
         __assign = Object.assign || function(t) {
@@ -52,12 +52,12 @@ var BarGauge = (function ()
     	value: 50         //percent value
     };
 
-    function BarGauge(opts) {
+    function ProgressBar(opts) {
     	if (opts === void 0) { opts = {};}
     	this._opts = __assign({}, defaults, opts);
     }
 
-    BarGauge.prototype.create = function (target) {
+    ProgressBar.prototype.create = function (target) {
     	this.svg = createSVGElem('svg', {
             'xmlns': 'http://www.w3.org/2000/svg',
             'width': this._opts.width,
@@ -69,7 +69,7 @@ var BarGauge = (function ()
     		'fill': this._opts.backgroundColor
     	});
         this.progress = createSVGElem('rect', {
-            'width': this._opts.value,
+            'width': this._opts.width / 100 * this._opts.value,
             'height': this._opts.height,
             'fill': this._opts.progressColor,
             'rx': this._opts.barRadius,
@@ -91,7 +91,7 @@ var BarGauge = (function ()
     }
 
 
-    BarGauge.prototype.val = function (value) {
+    ProgressBar.prototype.val = function (value) {
         if (typeof value != "undefined") {
             var w = this._opts.width / 100 * value;
             this._opts.value = value;
@@ -101,7 +101,7 @@ var BarGauge = (function ()
         return this._opts.value;
     }
 
-    BarGauge.prototype.width = function (width) {
+    ProgressBar.prototype.width = function (width) {
         if (typeof width != "undefined") {
             this._opts.width = width;
             this.svg.setAttribute('width', width);
@@ -111,7 +111,7 @@ var BarGauge = (function ()
         return this._opts.width;
     }
 
-    BarGauge.prototype.height = function (height) {
+    ProgressBar.prototype.height = function (height) {
         if (typeof height != "undefined") {
             this._opts.height = height;
             this.svg.setAttribute('height', height);
@@ -121,7 +121,7 @@ var BarGauge = (function ()
         return this._opts.height;
     }
 
-    BarGauge.prototype.progressColor = function (color) {
+    ProgressBar.prototype.progressColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.progressColor = color;
             this.progress.setAttribute('fill', color);
@@ -129,7 +129,7 @@ var BarGauge = (function ()
         return this._opts.progressColor;
     }
 
-    BarGauge.prototype.backgroundColor = function (color) {
+    ProgressBar.prototype.backgroundColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.backgroundColor = color;
             this.background.setAttribute('fill', color);
@@ -137,7 +137,7 @@ var BarGauge = (function ()
         return this._opts.backgroundColor;
     }
 
-    BarGauge.prototype.text = function (value) {
+    ProgressBar.prototype.text = function (value) {
         if (typeof value != "undefined") {
             //console.log(this._opts.value);
             this.textField.textContent = value+"%";
@@ -148,7 +148,7 @@ var BarGauge = (function ()
         return this.textField.textContent;
     }
 
-    BarGauge.prototype.radius = function (rad) {
+    ProgressBar.prototype.radius = function (rad) {
         if (typeof rad != "undefined") {
             this._opts.barRadius = rad;
             this.progress.setAttribute('rx', rad);
@@ -157,7 +157,7 @@ var BarGauge = (function ()
         return this._opts.barRadius;
     }
 
-    BarGauge.prototype.textColor = function (color) {
+    ProgressBar.prototype.textColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.textColor = color;
             this.textField.setAttribute('color', color);
@@ -165,7 +165,7 @@ var BarGauge = (function ()
         return this._opts.textColor;
     }
 
-    BarGauge.prototype.textSize = function (size) {
+    ProgressBar.prototype.textSize = function (size) {
         if (typeof size != "undefined") {
             this._opts.textSize = size;
             this.textField.setAttribute('font-size', size);
@@ -173,6 +173,6 @@ var BarGauge = (function ()
         return this._opts.textSize;
     }
 
-    return BarGauge;
+    return ProgressBar;
 
 }());
