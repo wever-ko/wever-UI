@@ -6,19 +6,19 @@
 
 html
 ```html
-<script src="path/to/ProgressBar.js"></script>
+<script src="path/to/HProgressBar.js"></script>
 
 <div id = 'target'></div>
 ```
 javascript
 ```javascript
 var target = document.getElementById('target');
-var progressBar = new ProgressBar().create(target);
+var hprogressBar = new HProgressBar().create(target);
 ```
 ## Examples
-[ProgressBar Examples](https://jgy1435.github.io/weverui/progressbar.html)
+[HProgressBar Examples](https://jgy1435.github.io/weverui/progressbar.html)
 ## Docs
-[ProgressBar API docs](./DOC.md)
+[HProgressBar API docs](./DOC.md)
 
 ## Browsers support
 
