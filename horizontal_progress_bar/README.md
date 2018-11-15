@@ -13,10 +13,10 @@ html
 javascript
 ```javascript
 var target = document.getElementById('target');
-var hprogressBar = new HProgressBar().create(target);
+var hProgressBar = new HProgressBar().create(target);
 ```
 ## Examples
-[HProgressBar Examples](https://jgy1435.github.io/weverui/progressbar.html)
+[HProgressBar Examples](https://jgy1435.github.io/weverui/hprogressbar.html)
 ## Docs
 [HProgressBar API docs](./DOC.md)
 
