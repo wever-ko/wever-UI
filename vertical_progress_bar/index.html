@@ -2,7 +2,7 @@
 <html>
 <head>
     <title> Bar Gauge</title>
-    <script type="text/javascript" src = "ProgressBar.js"></script>
+    <script type="text/javascript" src = "VProgressBar.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style type="text/css">
         html {
@@ -29,12 +29,12 @@
 
         <div>
             <div class="attrName"> width: </div>
-            <input type="range" id="width" name="width" min = "10" max ="500">
+            <input type="range" id="width" name="width" min = "10" max ="200">
             <a id="widthA"></a>
         </div>
         <div>
             <div class="attrName"> height: </div>
-            <input type="range" id="height" name="height" min = "0" max ="200">
+            <input type="range" id="height" name="height" min = "10" max ="500">
             <a id="heightA"></a>
         </div>
 
@@ -66,86 +66,86 @@
 
     var target = document.getElementById('test');
 
-    var progressBar = new ProgressBar();
-    progressBar.create(target);
+    var vProgressBar = new VProgressBar();
+    vProgressBar.create(target);
 
     // Value
     var pvalue = document.getElementById('value');
-    pvalue.value = progressBar.val();
+    pvalue.value = vProgressBar.val();
 
-    progressBar.text(pvalue.value);
+    vProgressBar.text(pvalue.value);
     var valueA = document.getElementById('valueA');
-    valueA.innerHTML = progressBar.val();
+    valueA.innerHTML = vProgressBar.val();
 
     pvalue.addEventListener('input', function() {
-        progressBar.val(pvalue.value);
+        vProgressBar.val(pvalue.value);
         valueA.innerHTML = pvalue.value;
     });
 
     //  width
     var width = document.getElementById('width');
-    width.value = progressBar.width();
+    width.value = vProgressBar.width();
 
     var widthA = document.getElementById('widthA');
     widthA.innerHTML = width.value;
 
     width.addEventListener('input', function() {
-        progressBar.width(width.value);
+        vProgressBar.width(width.value);
         widthA.innerHTML = width.value;
     });
 
     // height
     var height = document.getElementById('height');
-    height.value = progressBar.height();
+    height.value = vProgressBar.height();
 
     var heightA = document.getElementById('heightA');
     heightA.innerHTML = height.value;
 
     height.addEventListener('input', function(){
-        progressBar.height(height.value);
+        vProgressBar.height(height.value);
         heightA.innerHTML = height.value;
     });
 
     // radius
     var rad = document.getElementById('barRadius');
-    rad.value = progressBar.radius();
+    rad.value = vProgressBar.radius();
     var radiusA = document.getElementById('radiusA');
     radiusA.innerHTML = rad.value;
 
     rad.addEventListener('input', function(){
-        progressBar.radius(rad.value);
+        vProgressBar.radius(rad.value);
         radiusA.innerHTML = rad.value;
     });
 
     // valueColor
     var valueColor = document.getElementById('valueColor');
-    valueColor.value = progressBar.progressColor();
+    valueColor.value = vProgressBar.progressColor();
 
     valueColor.addEventListener("change", function(){
-        progressBar.progressColor(valueColor.value);
+        vProgressBar.progressColor(valueColor.value);
     });
 
     // background-Color
     var bgColor = document.getElementById('bgColor');
-    bgColor.value = progressBar.backgroundColor();
+    bgColor.value = vProgressBar.backgroundColor();
 
     bgColor.addEventListener("change", function(){
-        progressBar.backgroundColor(bgColor.value);
+        vProgressBar.backgroundColor(bgColor.value);
     });
 
     //text color
     var txtColor = document.getElementById('txtColor');
-    txtColor.value = progressBar.textColor();
+    txtColor.value = vProgressBar.textColor();
 
     txtColor.addEventListener("change", function(){
-        progressBar.textColor(txtColor.value);
+        vProgressBar.textColor(txtColor.value);
     });
 
     var txtSize = document.getElementById('txtSize');
-    txtSize.value = progressBar.textSize();
+    txtSize.value = vProgressBar.textSize();
 
     txtSize.addEventListener("input", function(){
-        progressBar.textSize(txtSize.value);
+        vProgressBar.textSize(txtSize.value);
     });
 </script>
 </html>
