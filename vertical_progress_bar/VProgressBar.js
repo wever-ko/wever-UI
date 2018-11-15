@@ -1,8 +1,8 @@
 /**
  * @author guyeoljeong
- * BarGauge UI
+ * VProgressBar UI
  */
-var BarGauge = (function ()
+var VProgressBar = (function ()
 {
     var __assign = (this && this.__assign) || function () {
         __assign = Object.assign || function(t) {
@@ -41,23 +41,23 @@ var BarGauge = (function ()
     }
 
     var defaults = {
-    	width: 200,
-    	height: 30,
+    	width: 30,
+    	height: 200,
         barRadius: 5,
     	progressColor: "#84cd99",
     	backgroundColor: "#e5e5e5",
-        text: "%",
+        text: "50%",
         textColor: "#000000",
         textSize: 10,
-    	value: 50         //percent value
+    	value: 0         //percent value
     };
 
-    function BarGauge(opts) {
+    function VProgressBar(opts) {
     	if (opts === void 0) { opts = {};}
     	this._opts = __assign({}, defaults, opts);
     }
 
-    BarGauge.prototype.create = function (target) {
+    VProgressBar.prototype.create = function (target) {
     	this.svg = createSVGElem('svg', {
             'xmlns': 'http://www.w3.org/2000/svg',
             'width': this._opts.width,
@@ -69,19 +69,22 @@ var BarGauge = (function ()
     		'fill': this._opts.backgroundColor
     	});
         this.progress = createSVGElem('rect', {
-            'width': this._opts.value,
-            'height': this._opts.height,
+            'width': this._opts.width,
+            'height': this._opts.height / 100 * this._opts.value,
             'fill': this._opts.progressColor,
+            'y': this._opts.height - this._opts.height / 100 * this._opts.value,
             'rx': this._opts.barRadius,
             'ry': this._opts.barRadius
         });
         this.textField = createSVGElem('text', {
-            'x': 0,
-            'y': 20,
-            'text-align': "center",
+            'x': this._opts.value/2,
+            'y': this._opts.height/2,
+            'text-anchor': "middle",
+            'alignment-baseline':"central",
             'font-size': this._opts.textSize,
             'color': this._opts.textColor
         });
+        this.textField.textContent = "";
     	target.appendChild(this.svg);
     	this.svg.appendChild(this.background);
         this.svg.appendChild(this.progress);
@@ -89,36 +92,39 @@ var BarGauge = (function ()
     }
 
 
-    BarGauge.prototype.val = function (value) {
+    VProgressBar.prototype.val = function (value) {
         if (typeof value != "undefined") {
-            var w = this._opts.width / 100 * value;
-            this.progress.setAttribute('width', w);
-            this.text(this._opts.value);
+            var h = this._opts.height / 100 * value;
+            this._opts.value = value;
+            this.progress.setAttribute('height', h);
+            this.progress.setAttribute('y', this._opts.height - h);
+            this.text(value);
         }
         return this._opts.value;
     }
 
-    BarGauge.prototype.width = function (width) {
+    VProgressBar.prototype.width = function (width) {
         if (typeof width != "undefined") {
             this._opts.width = width;
             this.svg.setAttribute('width', width);
             this.background.setAttribute('width', width);
+            this.progress.setAttribute('width', width);
             this.val(this._opts.value);
         }
         return this._opts.width;
     }
 
-    BarGauge.prototype.height = function (height) {
+    VProgressBar.prototype.height = function (height) {
         if (typeof height != "undefined") {
             this._opts.height = height;
             this.svg.setAttribute('height', height);
             this.background.setAttribute('height', height);
-            this.progress.setAttribute('height', height);
+            this.val(this._opts.value);
         }
         return this._opts.height;
     }
 
-    BarGauge.prototype.progressColor = function (color) {
+    VProgressBar.prototype.progressColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.progressColor = color;
             this.progress.setAttribute('fill', color);
@@ -126,30 +132,47 @@ var BarGauge = (function ()
         return this._opts.progressColor;
     }
 
-    BarGauge.prototype.backgroundColor = function (color) {
+    VProgressBar.prototype.backgroundColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.backgroundColor = color;
             this.background.setAttribute('fill', color);
         }
+        return this._opts.backgroundColor;
     }
 
-    /*
-    BarGauge.prototype.text = function (string) {
-        if (typeof string != "undefined") {
-            this.textField.textContent = this._opts.value + "%";
+    VProgressBar.prototype.text = function (value) {
+        if (typeof value != "undefined") {
+            //console.log(this._opts.value);
+            this.textField.textContent = value+"%";
+             __attrs(this.textField, {'x': this._opts.width / 2, 'y': this._opts.height / 2});
         }
         return this.textField.textContent;
     }
-    */
 
-    BarGauge.prototype.radius = function (rad) {
+    VProgressBar.prototype.radius = function (rad) {
         if (typeof rad != "undefined") {
             this._opts.barRadius = rad;
-            this.progress.setAttribute('rx', rad);
-            this.progress.setAttribute('ry', rad);
+            __attrs(this.progress, {'rx': rad, 'ry': rad});
         }
         return this._opts.barRadius;
     }
-    return BarGauge;
+
+    VProgressBar.prototype.textColor = function (color) {
+        if (typeof color != "undefined") {
+            this._opts.textColor = color;
+            this.textField.setAttribute('color', color);
+        }
+        return this._opts.textColor;
+    }
+
+    VProgressBar.prototype.textSize = function (size) {
+        if (typeof size != "undefined") {
+            this._opts.textSize = size;
+            this.textField.setAttribute('font-size', size);
+        }
+        return this._opts.textSize;
+    }
+
+    return VProgressBar;
 
 }());

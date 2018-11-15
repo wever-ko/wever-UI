@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Horizontal Progress Bar</title>
+    <script type="text/javascript" src = "HProgressBar.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style type="text/css">
+        html {
+            font-size: 12px;
+          font-family: 'Roboto', sans-serif;
+        }
+        .attrName {
+            display: inline-block;
+            width: 100px;
+        }
+        #test {
+            padding:4px; margin: 0 auto; width: 200px; height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div id='test'></div>
+    <div style="margin: 0 auto; background-color: #d7d7d7; padding: 10px; border-radius: 10px; width: 400px;">
+        <div>
+            <div class="attrName"> value (%): </div>
+            <input type="range" id="value" name="value" min = "0" max ="100">
+            <a id="valueA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> width: </div>
+            <input type="range" id="width" name="width" min = "10" max ="500">
+            <a id="widthA"></a>
+        </div>
+        <div>
+            <div class="attrName"> height: </div>
+            <input type="range" id="height" name="height" min = "0" max ="200">
+            <a id="heightA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> progress bar radius: </div>
+            <input id = "barRadius" type = "range" name = "radius" min = "0" max = "50" >
+            <a id="radiusA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> value color: </div>
+            <input id = "valueColor" type="color" name="color" value="#84cd99">
+        </div>
+        <div>
+            <div class="attrName"> background color: </div>
+            <input id = "bgColor" type="color" name="color" value="#e5e5e5">
+        </div>
+        <div>
+            <div class="attrName"> text color: </div>
+            <input id = "txtColor" type="color" name="textColor" value="#ffffff">
+        </div>
+        <div>
+            <div class="attrName"> text size: </div>
+            <input id = "txtSize" type="range" name="txtSize" min = "0" max = "20">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+
+    var target = document.getElementById('test');
+
+    var hProgressBar = new HProgressBar();
+    hProgressBar.create(target);
+
+    // Value
+    var pvalue = document.getElementById('value');
+    pvalue.value = hProgressBar.val();
+
+    hProgressBar.text(pvalue.value);
+    var valueA = document.getElementById('valueA');
+    valueA.innerHTML = hProgressBar.val();
+
+    pvalue.addEventListener('input', function() {
+        hProgressBar.val(pvalue.value);
+        valueA.innerHTML = pvalue.value;
+    });
+
+    //  width
+    var width = document.getElementById('width');
+    width.value = hProgressBar.width();
+
+    var widthA = document.getElementById('widthA');
+    widthA.innerHTML = width.value;
+
+    width.addEventListener('input', function() {
+        hProgressBar.width(width.value);
+        widthA.innerHTML = width.value;
+    });
+
+    // height
+    var height = document.getElementById('height');
+    height.value = hProgressBar.height();
+
+    var heightA = document.getElementById('heightA');
+    heightA.innerHTML = height.value;
+
+    height.addEventListener('input', function(){
+        hProgressBar.height(height.value);
+        heightA.innerHTML = height.value;
+    });
+
+    // radius
+    var rad = document.getElementById('barRadius');
+    rad.value = hProgressBar.radius();
+    var radiusA = document.getElementById('radiusA');
+    radiusA.innerHTML = rad.value;
+
+    rad.addEventListener('input', function(){
+        hProgressBar.radius(rad.value);
+        radiusA.innerHTML = rad.value;
+    });
+
+    // valueColor
+    var valueColor = document.getElementById('valueColor');
+    valueColor.value = hProgressBar.progressColor();
+
+    valueColor.addEventListener("change", function(){
+        hProgressBar.progressColor(valueColor.value);
+    });
+
+    // background-Color
+    var bgColor = document.getElementById('bgColor');
+    bgColor.value = hProgressBar.backgroundColor();
+
+    bgColor.addEventListener("change", function(){
+        hProgressBar.backgroundColor(bgColor.value);
+    });
+
+    //text color
+    var txtColor = document.getElementById('txtColor');
+    txtColor.value = hProgressBar.textColor();
+
+    txtColor.addEventListener("change", function(){
+        hProgressBar.textColor(txtColor.value);
+    });
+
+    var txtSize = document.getElementById('txtSize');
+    txtSize.value = hProgressBar.textSize();
+
+    txtSize.addEventListener("input", function(){
+        hProgressBar.textSize(txtSize.value);
+    });
+</script>
+</html>
