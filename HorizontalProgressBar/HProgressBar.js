@@ -1,8 +1,8 @@
 /**
  * @author guyeoljeong
- * VProgressBar UI
+ * HProgressBar UI
  */
-var VProgressBar = (function ()
+var HProgressBar = (function ()
 {
     var __assign = (this && this.__assign) || function () {
         __assign = Object.assign || function(t) {
@@ -41,8 +41,8 @@ var VProgressBar = (function ()
     }
 
     var defaults = {
-    	width: 30,
-    	height: 200,
+    	width: 200,
+    	height: 30,
         barRadius: 5,
     	progressColor: "#84cd99",
     	backgroundColor: "#e5e5e5",
@@ -52,12 +52,12 @@ var VProgressBar = (function ()
     	value: 50         //percent value
     };
 
-    function VProgressBar(opts) {
+    function HProgressBar(opts) {
     	if (opts === void 0) { opts = {};}
     	this._opts = __assign({}, defaults, opts);
     }
 
-    VProgressBar.prototype.create = function (target) {
+    HProgressBar.prototype.create = function (target) {
     	this.svg = createSVGElem('svg', {
             'xmlns': 'http://www.w3.org/2000/svg',
             'width': this._opts.width,
@@ -76,12 +76,12 @@ var VProgressBar = (function ()
             'ry': this._opts.barRadius
         });
         this.textField = createSVGElem('text', {
-            'x': this._opts.value/2,
-            'y': this._opts.height/2,
+            'x': this._opts.value / 2,
+            'y': this._opts.height / 2,
             'text-anchor': "middle",
             'alignment-baseline':"central",
             'font-size': this._opts.textSize,
-            'color': this._opts.textColor
+            'fill': this._opts.textColor
         });
         this.textField.textContent = "";
     	target.appendChild(this.svg);
@@ -91,7 +91,7 @@ var VProgressBar = (function ()
     }
 
 
-    VProgressBar.prototype.val = function (value) {
+    HProgressBar.prototype.val = function (value) {
         if (typeof value != "undefined") {
             var w = this._opts.width / 100 * value;
             this._opts.value = value;
@@ -101,7 +101,7 @@ var VProgressBar = (function ()
         return this._opts.value;
     }
 
-    VProgressBar.prototype.width = function (width) {
+    HProgressBar.prototype.width = function (width) {
         if (typeof width != "undefined") {
             this._opts.width = width;
             this.svg.setAttribute('width', width);
@@ -111,17 +111,18 @@ var VProgressBar = (function ()
         return this._opts.width;
     }
 
-    VProgressBar.prototype.height = function (height) {
+    HProgressBar.prototype.height = function (height) {
         if (typeof height != "undefined") {
             this._opts.height = height;
             this.svg.setAttribute('height', height);
             this.background.setAttribute('height', height);
             this.progress.setAttribute('height', height);
+            this.val(this._opts.value);
         }
         return this._opts.height;
     }
 
-    VProgressBar.prototype.progressColor = function (color) {
+    HProgressBar.prototype.progressColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.progressColor = color;
             this.progress.setAttribute('fill', color);
@@ -129,7 +130,7 @@ var VProgressBar = (function ()
         return this._opts.progressColor;
     }
 
-    VProgressBar.prototype.backgroundColor = function (color) {
+    HProgressBar.prototype.backgroundColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.backgroundColor = color;
             this.background.setAttribute('fill', color);
@@ -137,35 +138,32 @@ var VProgressBar = (function ()
         return this._opts.backgroundColor;
     }
 
-    VProgressBar.prototype.text = function (value) {
+    HProgressBar.prototype.text = function (value) {
         if (typeof value != "undefined") {
             //console.log(this._opts.value);
             this.textField.textContent = value+"%";
-            this.textField.setAttribute('x', this._opts.width/2);
-            this.textField.setAttribute('y', this._opts.height/2);
-
+            __attrs(this.textField, {'x': this._opts.width / 2, 'y': this._opts.height / 2});
         }
         return this.textField.textContent;
     }
 
-    VProgressBar.prototype.radius = function (rad) {
+    HProgressBar.prototype.radius = function (rad) {
         if (typeof rad != "undefined") {
             this._opts.barRadius = rad;
-            this.progress.setAttribute('rx', rad);
-            this.progress.setAttribute('ry', rad);
+            __attrs(this.textField, {'rx': rad, 'ry': rad});
         }
         return this._opts.barRadius;
     }
 
-    VProgressBar.prototype.textColor = function (color) {
+    HProgressBar.prototype.textColor = function (color) {
         if (typeof color != "undefined") {
             this._opts.textColor = color;
-            this.textField.setAttribute('color', color);
+            this.textField.setAttribute('fill', color);
         }
         return this._opts.textColor;
     }
 
-    VProgressBar.prototype.textSize = function (size) {
+    HProgressBar.prototype.textSize = function (size) {
         if (typeof size != "undefined") {
             this._opts.textSize = size;
             this.textField.setAttribute('font-size', size);
@@ -173,6 +171,6 @@ var VProgressBar = (function ()
         return this._opts.textSize;
     }
 
-    return VProgressBar;
+    return HProgressBar;
 
 }());

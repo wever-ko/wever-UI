@@ -1,22 +1,22 @@
 # Vertical Progress Bar
 
 ## Preview
-![](./img/ProgressBar_Horizontal.gif)
+![](./img/ProgressBar_Vertical.gif)
 ## Usage
 
 html
 ```html
-<script src="path/to/ProgressBar.js"></script>
+<script src="path/to/VProgressBar.js"></script>
 
 <div id = 'target'></div>
 ```
 javascript
 ```javascript
 var target = document.getElementById('target');
-var progressBar = new ProgressBar().create(target);
+var vProgressBar = new VProgressBar().create(target);
 ```
 ## Examples
-[ProgressBar Examples](https://jgy1435.github.io/weverui/progressbar.html)
+[ProgressBar Examples](https://jgy1435.github.io/weverui/vprogressbar.html)
 ## Docs
 [ProgressBar API docs](./DOC.md)
 
