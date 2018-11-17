@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> RadarChart</title>
+    <script type="text/javascript" src = "radarChart.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    
+    <style type="text/css">
+        html {
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .attrName {
+            display: inline-block;
+            width: 150px;
+        }
+        #test {
+            padding:4px; margin: 0 auto; width: 200px; height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div id='test'></div> 
+    <div style="margin: 0 auto; background-color: #d7d7d7; padding: 10px; border-radius: 10px; width: 400px;">
+        <div>
+            <div class="attrName"> value (%): </div>
+            <input type="range" id="value" name="value" min = "0" max ="100">
+            <a id="valueA"></a>
+        </div>
+        <div>
+            <div class="attrName"> radius: </div>
+            <input type="range" id = "radius" name="radius" min = "50" max ="200" value="50">
+            <a id="radiusA"></a>
+        </div>
+        <div>
+            <div class="attrName"> Axis line width: </div>
+            <input type="range" id="axisLineWidth" name="axisLineWidth" min = "0" max ="50">
+            <a id="axisLineWidthA"></a>
+        </div>
+        <div>
+            <div class="attrName"> Data In line width: </div>
+            <input type="range" id="dataInLineWidth" name="dataInLineWidth" min = "0" max ="50">
+            <a id="dataInLineWidthA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> Data Out line width: </div>
+            <input type="range" id="dataOutLineWidth" name="dataOutLineWidth" min = "0" max ="50">
+            <a id="dataOutLineWidthA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> text size: </div>
+            <input type="range" id="textSize" name="emptyLineWidth" min = "0" max ="50">
+            <a id="textSizeA"></a>
+        </div>
+        <div>
+            <div class="attrName"> background color: </div>
+            <input id = "bgColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> In Line color: </div>
+            <input id= "inlineColor" type="color" name="color" value="#d500f9">
+        </div>
+        <div>
+            <div class="attrName"> Out Line Color: </div>
+            <input id = "outLineColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> Data Line Color: </div>
+            <input id = "dataLineColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> Data Fill Color: </div>
+            <input id = "dataFillColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> text color: </div>
+            <input id = "textColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> animation: </div>
+            <input id ="animTo" type ="text" name ="num" value="100" size ="10">
+            <button onclick="animStart();"> Start! </button>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+   
+    var target = document.getElementById('test');
+   
+    var radarChart = new RadarChart({'Math': 1, 'English' : 9, 'PE': 5, 'Science': 3, 'Korean' : 6}, {
+        lineWidth : 40,
+        percentage: 30,
+        radius : 100,
+        lineColor: '#5ca284',
+        bgColor : '#ffffff',
+        showText: true,
+        inlineWidth: 1,
+        outlineWidth : 2,
+        emptyLineWidth: 25,
+        emptyLineColor: '#afdcc9',
+        textColor : '#07472C'
+    }).create(target);
+/*
+    circularBar.text("" + Math.round(circularBar.val()) + "%");
+    
+    circularBar.step = function ()
+    {
+        circularBar.text("" + Math.round(circularBar.val()) + "%");
+    }
+
+    // Value
+  
+    var pvalue = document.getElementById('value');
+    pvalue.value = circularBar.val();
+
+    var valueA = document.getElementById('valueA');
+    valueA.innerHTML = circularBar.val();
+   
+    pvalue.addEventListener('input', function() {
+        circularBar.val(pvalue.value);
+        valueA.innerHTML = pvalue.value;
+    });
+*/
+    // axis Line Width
+    var axisLineWidth = document.getElementById('axisLineWidth');
+    axisLineWidth.value = radarChart.axisWidth();
+
+    var axisLineWidthA = document.getElementById('axisLineWidthA');
+    axisLineWidthA.innerHTML = axisLineWidth.value;
+    
+    axisLineWidth.addEventListener('input', function() {
+        radarChart.axisWidth(axisLineWidth.value);
+        axisLineWidthA.innerHTML = axisLineWidth.value;
+    });
+
+    // data Inline Width
+    var dataInLineWidth = document.getElementById('dataInLineWidth');
+    dataInLineWidth.value = radarChart.inLineWidth();
+
+    var dataInLineWidthA = document.getElementById('dataInLineWidthA');
+    dataInLineWidthA.innerHTML = dataInLineWidth.value;
+    
+    dataInLineWidth.addEventListener('input', function(){
+        radarChart.inLineWidth(dataInLineWidth.value);
+        dataInLineWidthA.innerHTML = dataInLineWidth.value;
+    });
+
+    // data Outline Width
+    var dataOutLineWidth = document.getElementById('dataOutLineWidth');
+    dataOutLineWidth.value = radarChart.outLineWidth();
+
+    var dataOutLineWidthA = document.getElementById('dataOutLineWidthA');
+    dataOutLineWidthA.innerHTML = dataOutLineWidth.value;
+    
+    dataOutLineWidth.addEventListener('input', function(){
+        radarChart.outLineWidth(dataOutLineWidth.value);
+        dataOutLineWidthA.innerHTML = dataOutLineWidth.value;
+    });
+
+    // radius
+    var radius = document.getElementById('radius');
+    radius.value = radarChart.radius();
+
+    var radiusA = document.getElementById('radiusA');
+    radiusA.innerHTML = radius.value;
+
+    radius.addEventListener('input', function(){
+        radarChart.radius(radius.value);
+        radiusA.innerHTML = radius.value;
+    });
+
+    // inline Color
+    var inlineColor = document.getElementById('inlineColor');
+    inlineColor.value = radarChart.inLineColor();
+
+    inlineColor.addEventListener("change", function(){
+        radarChart.inLineColor(inlineColor.value);
+    });
+
+    // outline color
+    var outLineColor = document.getElementById('outLineColor');
+    outLineColor.value = radarChart.outLineColor();
+
+    outLineColor.addEventListener("change", function (){
+        radarChart.outLineColor(outLineColor.value);
+    });
+
+    // data line color
+    var dataLineColor = document.getElementById('dataLineColor');
+    dataLineColor.value = radarChart.dataLineColor();
+
+    dataLineColor.addEventListener("change", function (){
+        radarChart.dataLineColor(dataLineColor.value);
+    });
+
+    // bgColor
+    var bgColor = document.getElementById('bgColor');
+    bgColor.value= radarChart.bgColor();
+
+    bgColor.addEventListener("change", function () {
+        radarChart.bgColor(bgColor.value);
+    });
+
+    var dataFillColor = document.getElementById('dataFillColor');
+    dataFillColor.value = radarChart.dataFillColor();
+    dataFillColor.addEventListener('change', function (){
+        radarChart.dataFillColor(dataFillColor.value);
+    });
+    
+</script>
+</html>
