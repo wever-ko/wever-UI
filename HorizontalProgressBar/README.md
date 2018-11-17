@@ -18,7 +18,7 @@ var hProgressBar = new HProgressBar().create(target);
 ## Examples
 [HProgressBar Examples](https://jgy1435.github.io/weverui/hprogressbar.html)
 ## Docs
-[HProgressBar API docs](./DOC.md)
+[HProgressBar API docs](https://github.com/jgy1435/ygUI/wiki/Horizontal-Progress-Bar)
 
 ## Browsers support
 
