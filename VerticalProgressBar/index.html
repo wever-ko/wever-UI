@@ -66,8 +66,7 @@
 
     var target = document.getElementById('test');
 
-    var vProgressBar = new VProgressBar();
-    vProgressBar.create(target);
+    var vProgressBar = new VProgressBar().create(target).height(200).width(30).val(70);
 
     // Value
     var pvalue = document.getElementById('value');

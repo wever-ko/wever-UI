@@ -1,15 +1,15 @@
-# wever-UI. 
+# wever-UI.
 Javascript UI Components
-
 | *Circle Gauge* | *Half Circle Gauge* |  *~~Radar Chart~~* |
 | :------------- | :------------- | :------------- |
 | <img src="./CircleGauge/docs/exsvg.svg" width="130"> | <img src="./HalfCircleGauge/docs/exsvg.svg" width="130"> | <img src="./RadarChart/docs/eximg.png" width="130"> |
 |[code](./CircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/circlegauge.html) |[code](./HalfCircleGauge) <br> [examples](https://yeonjuan.github.io/ygui/halfCircleGauge.html) | [code](./RadarChart) <br> [examples]() |
 
-## to-do.  
+## to-do.
 - [x] Circle Gauge
 - [x] Half Circle Gauge
-- [ ] Bar Gauge (진행중)
+- [x] Vertical Progress Bar
+- [x] Horizontal Progress Bar
 - [ ] Radal Chart (진행중)
 - [ ] Loading Spin
 - [ ] Timer
