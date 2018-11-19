@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Circular Percentage Bar</title>
+    <script type="text/javascript" src = "starRatingSelector.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style type="text/css">
+        html {
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .attrName {
+            display: inline-block;
+            width: 100px;
+        }
+        #test {
+            padding:4px; margin: 0 auto; width: 200px; height: 250px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id='test'></div> 
+    <div style="margin: 0 auto; background-color: #d7d7d7; padding: 10px; border-radius: 10px; width: 400px;">
+        <div>
+            <div class="attrName"> interval: </div>
+            <input type="range" id="interval" name="interval" min = "0" max ="50">
+            <a id="intervalA"></a>
+        </div>
+        <div>
+            <div class="attrName"> padding: </div>
+            <input type="range" id="padding" name="padding" min = "0" max ="50">
+            <a id="paddingA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> evenRadius: </div>
+            <input type="range" id="evenRadius" name="evenRadius" min = "0" max ="50">
+            <a id="evenRadiusA"></a>
+        </div>
+        <div>
+            <div class="attrName"> oddRadius: </div>
+            <input type="range" id="oddRadius" name="oddRadius" min = "0" max ="50">
+            <a id="oddRadiusA"></a>
+        </div>
+
+        <div>
+            <div class="attrName"> background color: </div>
+            <input id = "bgColor" type="color" name="color" value="#3f87a6">
+        </div>
+        
+        <div>
+            <div class="attrName"> fill color: </div>
+            <input id= "fillColor" type="color" name="color" value="#d500f9">
+        </div>
+
+        <div>
+            <div class="attrName"> fill line color: </div>
+            <input id= "fillLineColor" type="color" name="color" value="#d500f9">
+        </div>
+
+        <div>
+            <div class="attrName"> empty line color: </div>
+            <input id = "emptyLineColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> text color: </div>
+            <input id = "textColor" type="color" name="color" value="#3f87a6">
+        </div>
+        <div>
+            <div class="attrName"> animation: </div>
+            <input id ="animTo" type ="text" name ="num" value="100" size ="10">
+            <button onclick="animStart();"> Start! </button>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    
+    var target = document.getElementById('test');
+    var starRatingSelector = new StarRating({
+
+    }).create(target);
+
+    // width
+
+
+   /*
+    var circularBar = new CircleGauge({
+        lineWidth : 40,
+        percentage: 70,
+        radius : 50,
+        lineColor: '#5ca284',
+        bgColor : '#ffffff',
+        emptyLineColor: '#afdcc9',
+        showText: true,
+        lineWidth: 25,
+        emptyLineWidth: 25,
+        textColor : '#07472C'
+    }).create(target);
+    
+    circularBar.text("" + Math.round(circularBar.val()) + "%");
+    
+    circularBar.step = function ()
+    {
+        circularBar.text("" + Math.round(circularBar.val()) + "%");
+    }
+
+    // Value
+    var pvalue = document.getElementById('value');
+    pvalue.value = circularBar.val();
+
+    var valueA = document.getElementById('valueA');
+    valueA.innerHTML = circularBar.val();
+   
+    pvalue.addEventListener('input', function() {
+        circularBar.val(pvalue.value);
+        valueA.innerHTML = pvalue.value;
+    });
+
+    // line width
+    var lineWidth = document.getElementById('lineWidth');
+    lineWidth.value = circularBar.lineWidth();
+
+    var lineWidthA = document.getElementById('lineWidthA');
+    lineWidthA.innerHTML = lineWidth.value;
+    
+    lineWidth.addEventListener('input', function() {
+        circularBar.lineWidth(lineWidth.value);
+        lineWidthA.innerHTML = lineWidth.value;
+    });
+*/
+    // empty line width
+
+    var interval = document.getElementById('interval');
+    interval.value = starRatingSelector.interval();
+
+    var intervalA = document.getElementById('intervalA');
+
+    interval.addEventListener('input', function () {
+        starRatingSelector.interval(interval.value);
+        intervalA.innerHTML = interval.value;
+    });
+
+    var padding = document.getElementById('padding');
+    padding.value = starRatingSelector.padding();
+
+    padding.addEventListener('input', function (){
+        starRatingSelector.padding(padding.value);
+        paddingA.innerHTML = padding.value;
+    });
+    
+    var evenRadius = document.getElementById('evenRadius');
+    evenRadius.value = starRatingSelector.evenRadius();
+
+    evenRadius.addEventListener('input', function () {
+        starRatingSelector.evenRadius(evenRadius.value);
+        evenRadiusA.innerHTML = evenRadius.value;
+    });
+
+    var oddRadius = document.getElementById('oddRadius');
+    oddRadius.value = starRatingSelector.oddRadius();
+
+    oddRadius.addEventListener('input', function () {
+        starRatingSelector.oddRadius(oddRadius.value);
+        oddRadiusA.innerHTML = oddRadius.value;
+    });
+/*
+    // line Color
+    var lineColor = document.getElementById('lineColor');
+    lineColor.value = circularBar.lineColor();
+
+    lineColor.addEventListener("change", function(){
+        circularBar.lineColor(lineColor.value);
+    });
+
+    // empty line color
+    var emptyLineColor = document.getElementById('emptyLineColor');
+    emptyLineColor.value = circularBar.emptyLineColor();
+
+    emptyLineColor.addEventListener("change", function (){
+        circularBar.emptyLineColor(emptyLineColor.value);
+    })
+*/
+    // bgColor
+    var bgColor = document.getElementById('bgColor');
+    bgColor.value= starRatingSelector.bgColor();
+
+    bgColor.addEventListener("change", function () {
+        starRatingSelector.bgColor(bgColor.value);
+    });
+
+    var fillColor = document.getElementById('fillColor');
+    fillColor.value= starRatingSelector.fillColor();
+
+    fillColor.addEventListener("change", function () {
+        starRatingSelector.fillColor(fillColor.value);
+    });
+
+    var fillLineColor = document.getElementById('fillLineColor');
+    fillLineColor.value = starRatingSelector.fillLineColor();
+
+    fillLineColor.addEventListener('change', function () {
+        starRatingSelector.fillLineColor(fillLineColor.value);
+    });
+/*
+    //text Color
+    var textColor = document.getElementById('textColor');
+    textColor.value = circularBar.textColor();
+
+    textColor.addEventListener("change", function(){
+        circularBar.textColor(textColor.value);
+    });
+
+    //text Size
+    var textSize = document.getElementById('textSize');
+    textSize.value = circularBar.textSize();
+
+    var textSizeA = document.getElementById('textSizeA');
+    textSizeA.innerHTML = circularBar.textSize();
+
+    textSize.addEventListener("input", function (){
+        circularBar.textSize(textSize.value);
+        textSizeA.value = textSize.value;
+    });
+
+    var animValue = document.getElementById('animTo');
+    function animStart ()
+    {
+        circularBar.val(animValue.value, true, 100);
+    }
+
+*/
+</script>
+</html>
