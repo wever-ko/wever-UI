@@ -2,7 +2,7 @@
  * @author Yeon Ju An
  * HalfCircleGauge
  */
-var HalfCircleGauge = (function ()
+var HalfCircleGauge = (function (global)
 {
     /**
      * @private
@@ -52,13 +52,12 @@ var HalfCircleGauge = (function ()
     /**
      * @private
      * @method
-     * @param {Number} s
-     * @param {Number} p
-     * @param {Number} r
-     * @param {Number} ox
-     * @param {Number} oy
+     * @param {Number} p 퍼센티지 값
+     * @param {Number} r 반지름값 (radius)
+     * @param {Number} ox 기준값 X (offset X)
+     * @param {Number} oy 기준값 Y (offset Y)
      */
-    function arcPath (s, p, r, ox, oy)
+    function arcPath (p, r, ox, oy)
     {
         var e =  (Math.PI) * p / 100;
         return [
@@ -79,7 +78,7 @@ var HalfCircleGauge = (function ()
         lineColor: '#000000',
         lineWidth: 20,
         radius: 50,
-        percentage: 30,
+        value: 30,
         showText: true,
         textColor: '#ff0000',
         textSize: 20,
@@ -90,7 +89,7 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @constructor
-     * @param {Object} opts
+     * @param {Object} opts 옵션
      */
     function HalfCircleGauge (opts)
     {
@@ -101,7 +100,7 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {Element} target
+     * @param {Element} target svg를 생성할 타겟
      */
     HalfCircleGauge.prototype.create = function (target)
     {
@@ -110,7 +109,7 @@ var HalfCircleGauge = (function ()
             o = this.opts;
         
         // Create SVG
-        this.svg = createSVGElem('svg', { 'xmlns': 'http://www.w3.org/2000/svg', 'width': sw, 'height': sh});
+        this.svg = createSVGElem('svg', {'xmlns': 'http://www.w3.org/2000/svg', 'width': sw, 'height': sh});
 
         // Create bg
         this.bg = createSVGElem('rect', {'fill': o.bgColor, 'width': '100%', 'height': '100%'});
@@ -121,17 +120,16 @@ var HalfCircleGauge = (function ()
             'fill': 'transparent',
             'stroke': o.emptyLineColor,
             'stroke-width': o.emptyLineWidth,
-            'd': arcPath(0, 100, o.radius, this._getoffx(), sh)
+            'd': arcPath(100, o.radius, this._getoffx(), sh)
         });
         this.svg.appendChild(this.epath);
-
 
         // Create line
         this.path = createSVGElem('path', {
             'fill': 'transparent',
             'stroke': o.lineColor,
             'stroke-width': o.lineWidth,
-            'd': arcPath(0, o.percentage, o.radius, this._getoffx(), sh)
+            'd': arcPath(o.value, o.radius, this._getoffx(), sh)
         });
         this.svg.appendChild(this.path);
 
@@ -154,29 +152,38 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {Number} v
+     * @param {Number} v 설정할 퍼센티지 값
+     * @param {Boolean} anim 애니메이션 여부
+     * @param {Number} msec 애니메이션 수행시간
+     * @param {Function} cb 애니메이션 끝에 발생하는 콜백
+     * @return {Number} 현재 설정된 퍼센티지 값 반환
+     * 현재 퍼센티지값 설정
      */
-    HalfCircleGauge.prototype.val = function (v, anim, msec)
+    HalfCircleGauge.prototype.val = function (v, anim, msec, cb)
     {
         if(typeof v !== "undefined")
         {
-            var opts = this.opts;
-            var _this = this;
+            var opts = this.opts,
+                _this = this;
             v = parseFloat(v);
             var dv = v;
             if (anim)
             {
-                var unit = (dv - opts.percentage) / msec;
+                var unit = (dv - opts.value) / msec;
 
                 var itv = setInterval( function () 
                 {
-                    _this.opts.percentage += unit;
-                    if( Math.abs(_this.opts.percentage - dv) <= (2 * Math.abs(unit)))
+                    _this.opts.value += unit;
+                    if( Math.abs(_this.opts.value - dv) <= (2 * Math.abs(unit)))
                     {
-                        _this.opts.percentage = dv;
+                        _this.opts.value = dv;
                         clearInterval(itv);
+                        if( typeof cb === "function")
+                        {
+                            cb();
+                        }
                     }
-                    _this.path.setAttribute('d',  arcPath(0, _this.opts.percentage, _this.opts.radius, _this._getoffx(), _this._geth()));
+                    _this.path.setAttribute('d',  arcPath(_this.opts.value, _this.opts.radius, _this._getoffx(), _this._geth()));
                     
                     if(typeof _this.step === "function")
                     {
@@ -184,10 +191,10 @@ var HalfCircleGauge = (function ()
                     }
 
                 }, 1);
-                return this.opts.percentage;
+                return this.opts.value;
             }
-            this.opts.percentage = dv;
-            this.path.setAttribute('d', arcPath(0, this.opts.percentage, this.opts.radius, this._getoffx(), this._geth()));
+            this.opts.value = dv;
+            this.path.setAttribute('d', arcPath(this.opts.value, this.opts.radius, this._getoffx(), this._geth()));
            
             if(typeof this.step === "function")
             {
@@ -195,13 +202,14 @@ var HalfCircleGauge = (function ()
             }
         }
 
-        return this.opts.percentage;
+        return this.opts.value;
     }
 
     /**
      * @public
      * @method
-     * @param {String} c
+     * @param {String} c 설정할 배경 색상
+     * @return {String} 현재 설정된 배경 색상
      */
     HalfCircleGauge.prototype.bgColor = function (c)
     {
@@ -216,7 +224,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {String} c
+     * @param {String} c 설정할 내부 텍스트 색상
+     * @return {String} 현재 설정된 내부 텍스트 색상
      */
     HalfCircleGauge.prototype.textColor = function (c)
     {
@@ -231,7 +240,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {Number} c
+     * @param {Number} s 설정할 내부 텍스트 크기
+     * @param {Number} 현재 설정된 내부 텍스트 크기
      */
     HalfCircleGauge.prototype.textSize = function (s)
     {
@@ -246,7 +256,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {String} t
+     * @param {String} t 설정할 내부 텍스트값
+     * @param {String} 현재 설정된 내부 텍스트값
      */
     HalfCircleGauge.prototype.text = function (t)
     {
@@ -260,7 +271,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {Number} r
+     * @param {Number} r 설정할 반지름 크기
+     * @return {Number} 현재 설정된 반지름 크기
      */
     HalfCircleGauge.prototype.radius = function (r)
     {
@@ -275,7 +287,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {Number} w
+     * @param {Number} w 설정할 퍼센티지 굵기
+     * @return {Number} 현재 설정된 퍼센티지 굵기
      */
     HalfCircleGauge.prototype.lineWidth = function (w)
     {
@@ -291,7 +304,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {String} c
+     * @param {String} c 설정할 퍼센티지 색상
+     * @return {String} 현재 설정된 퍼센티지 색상
      */
     HalfCircleGauge.prototype.lineColor = function (c)
     {
@@ -306,7 +320,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {Number} w
+     * @param {Number} w 설정할 빈공간 굵기
+     * @return {Number} 현재 설정된 빈공간 굵기
      */
     HalfCircleGauge.prototype.emptyLineWidth = function (w)
     {
@@ -322,7 +337,8 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @param {String} c
+     * @param {String} c 설정할 빈공간 색상 값
+     * @return {String} 현재 설정된 색상 값
      */
     HalfCircleGauge.prototype.emptyLineColor = function (c)
     {
@@ -337,7 +353,7 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @return {Number}
+     * @return {Number} 옵션에 맞는 width
      */
     HalfCircleGauge.prototype._getw = function ()
     {
@@ -348,7 +364,7 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @return {Number}
+     * @return {Number} 옵션에 맞는 height
      */
     HalfCircleGauge.prototype._geth = function ()
     {
@@ -359,7 +375,7 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
-     * @return {Number}
+     * @return {Number} 옵션에 맞는 offset X
      */
     HalfCircleGauge.prototype._getoffx = function ()
     {
@@ -370,6 +386,7 @@ var HalfCircleGauge = (function ()
     /**
      * @public
      * @method
+     * 옵션에 맞게 크기 재 조정
      */
     HalfCircleGauge.prototype._resize = function ()
     {
@@ -378,10 +395,19 @@ var HalfCircleGauge = (function ()
             o = this.opts;
         __attrs(this.svg, {'width': sw, 'height': sh});
         __attrs(this._text, {'x' : sw / 2, 'y': sh});
-        this.epath.setAttribute('d', arcPath(0, 100, o.radius, this._getoffx(), sh));
-        this.path.setAttribute('d', arcPath(0, o.percentage, o.radius, this._getoffx(), sh));
-        
-      }
+        this.epath.setAttribute('d', arcPath(100, o.radius, this._getoffx(), sh));
+        this.path.setAttribute('d', arcPath(o.value, o.radius, this._getoffx(), sh));
+    }
 
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = HalfCircleGauge;
+    } else if (typeof define === 'function' && define.amd) {
+        define([], function(){
+            return HalfCircleGauge;
+        });
+    } else {
+        global.HalfCircleGauge = HalfCircleGauge;
+    }
+    
     return HalfCircleGauge;
-}());
+}(this.window || global));
