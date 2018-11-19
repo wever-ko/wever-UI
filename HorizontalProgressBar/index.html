@@ -65,9 +65,10 @@
 <script type="text/javascript">
 
     var target = document.getElementById('test');
+    var optios = {
 
-    var hProgressBar = new HProgressBar();
-    hProgressBar.create(target);
+    };
+    var hProgressBar = new HProgressBar().create(target).val(10).height(40).width(300);
 
     // Value
     var pvalue = document.getElementById('value');

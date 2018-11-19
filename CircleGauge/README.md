@@ -1,4 +1,4 @@
-# Circular Percentage Bar
+# CircleGauge
 
 ## Preview
 ![](./docs/exgif.gif)
@@ -6,18 +6,19 @@
 
 html
 ```html
-<script src="path/to/curcular_bar.js"></script>
+<script src="path/to/circleGauge.js"></script>
 
 <div id = 'target'></div>
 ```
 javascript
 ```javascript
 var target = document.getElementById('target');
-var circularBar = new CircularBar().create(target);
+var circularBar = new CircleGauge().create(target);
 ```
-
+## Examples
+[CircleGauge Examples](https://yeonjuan.github.io/ygui/circlegauge.html)
 ## Docs
-[CircularBar API docs](./DOC.md)
+[CircleGauge API docs](./DOC.md)
 
 ## Browsers support
 

@@ -1,24 +1,23 @@
-# Horizontal Progress Bar
+# HalfCircleGauge
 
 ## Preview
-![](./img/ProgressBar_Horizontal.gif)
+![](./docs/exgif.gif)
 ## Usage
 
 html
 ```html
-<script src="path/to/HProgressBar.js"></script>
+<script src="path/to/halfCircleGauge.js"></script>
 
 <div id = 'target'></div>
 ```
 javascript
 ```javascript
 var target = document.getElementById('target');
-var hProgressBar = new HProgressBar().create(target);
+var halfCircleGauge = new HalfCircleGauge().create(target);
 ```
-## Examples
-[HProgressBar Examples](https://jgy1435.github.io/weverui/hprogressbar.html)
+
 ## Docs
-[HProgressBar API docs](https://github.com/jgy1435/ygUI/wiki/Horizontal-Progress-Bar)
+[HalfCircleGauge API docs](./DOC.md)
 
 ## Browsers support
 
