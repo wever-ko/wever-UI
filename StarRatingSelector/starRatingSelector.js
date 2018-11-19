@@ -86,6 +86,9 @@ var StarRating = (function ()
         interval: 10
     };
 
+    /**
+        
+     */
     function onStarClick (t, id, num)
     {
         var _this = t;
