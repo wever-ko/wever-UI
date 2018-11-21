@@ -101,7 +101,6 @@ var CircleGauge = (function (global)
         value: 0,
         textColor: '#ff0000',
         textSize: 12,
-        showText: true,
         emptyLineColor: '#E0E0E0',
         emptyLineWidth: 5,
         text: null
@@ -131,7 +130,7 @@ var CircleGauge = (function (global)
         
         this.svg = createSVGElem('svg', {'xmlns': 'http://www.w3.org/2000/svg', 'viewBox' : '0 0 100 100' });
         this.text = o.text;
-        
+
         this._emptypath = createSVGElem('path', {
             'fill': 'transparent', 'stroke': o.emptyLineColor,
             'stroke-width': o.emptyLineWidth, 'd': arcPath(99.99, o.radius, ofs, ofs)
@@ -148,6 +147,8 @@ var CircleGauge = (function (global)
             'text-anchor': 'middle', 'font-size': o.textSize
         }, this.svg);
 
+        this.setText(this.text(o.value));
+        
         t.appendChild(this.svg);
 
         return this;
