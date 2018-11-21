@@ -14,7 +14,7 @@
             width: 100px;
         }
         #test {
-            padding:4px; margin: 0 auto; width: 200px; height: 250px;
+            padding:4px; margin: 0 auto; width: 200px; height: 250px; border-style: solid; border-width: 1px 1px 1px 1px; border-color: black;
         }
     </style>
 </head>
@@ -28,7 +28,7 @@
         </div>
         <div>
             <div class="attrName"> radius: </div>
-            <input type="range" id = "radius" name="radius" min = "40" max ="100" value="50">
+            <input type="range" id = "radius" name="radius" min = "0" max ="100" value="50">
             <a id="radiusA"></a>
         </div>
         <div>
@@ -74,24 +74,25 @@
     var target = document.getElementById('test');
    
     var circularBar = new CircleGauge({
-        lineWidth : 40,
+        lineWidth : 10,
         value: 70,
-        radius : 50,
+        radius : 25,
         lineColor: '#5ca284',
-        bgColor : '#ffffff',
         emptyLineColor: '#afdcc9',
         showText: true,
-        lineWidth: 25,
-        emptyLineWidth: 25,
-        textColor : '#07472C'
+        emptyLineWidth: 10,
+        textColor : '#07472C',
+        text: function(value) {
+            return (parseFloat(value) |0 ) + "%";
+        }
     }).create(target);
     
-    circularBar.text("" + Math.round(circularBar.val()) + "%");
+    //circularBar.text("" + Math.round(circularBar.val()) + "%");
     
-    circularBar.step = function ()
-    {
-        circularBar.text("" + Math.round(this.val()) + "%");
-    }
+   // circularBar.step = function ()
+  //  {
+     //   circularBar.text("" + Math.round(this.val()) + "%");
+  //  }
 
     // Value
     var pvalue = document.getElementById('value');
@@ -157,13 +158,6 @@
         circularBar.emptyLineColor(emptyLineColor.value);
     })
 
-    // bgColor
-    var bgColor = document.getElementById('bgColor');
-    bgColor.value= circularBar.bgColor();
-
-    bgColor.addEventListener("change", function () {
-        circularBar.bgColor(bgColor.value);
-    });
 
     //text Color
     var textColor = document.getElementById('textColor');

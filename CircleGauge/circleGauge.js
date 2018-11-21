@@ -55,16 +55,15 @@ var CircleGauge = (function (global)
     /**
      * @private
      * @function
-     * @param {Number} st 시작 radial 값
      * @param {Number} p 설정할 퍼센티지 값
      * @param {Number} r 반경
      * @param {Number} x offset x 값
      * @param {Number} y offset y 값
      */
-    function arcPath (st, p, r, x, y) {
+    function arcPath (p, r, x, y) {
         if (p >= 100) p = 99.99;
-        var e = st + (p / 100) * ((Math.PI / 2 * 3) - st);
-        
+        var st = (-Math.PI / 2),
+            e = st + (p / 100) * ((Math.PI / 2 * 3) - st);
         return [    
                 'M',
                 r + x + r * Math.cos(st),
@@ -81,25 +80,13 @@ var CircleGauge = (function (global)
     /**
      * @private
      * @function
-     * 재 계산된 svg 크기 반환
-     * @param {Object} o svg 크기를 재 계산할 옵션
-     * @returns {Number}
-     */
-    function svgsz (o)
-    {
-      return o.radius * 2 + ((o.lineWidth > o.emptyLineWidth) ? (o.lineWidth) : (o.emptyLineWidth));     
-    }
-
-    /**
-     * @private
-     * @function
      * 재 계산된 offset 반환
      * @param {Object} o offset 을 재 계산할 옵션
      * @returns {Number}
      */
     function offset (o)
     {
-        return (((o.lineWidth > o.emptyLineWidth) ? (o.lineWidth) : (o.emptyLineWidth))) / 2;
+        return 50 - o.radius;
     }
 
     /**
@@ -108,16 +95,16 @@ var CircleGauge = (function (global)
      */
     var defaults = 
     {
-        bgColor: '#EEF5DB',
         lineColor: '#E63462', 
         lineWidth: 5,
-        radius: 50,
+        radius: 25,
         value: 0,
         textColor: '#ff0000',
         textSize: 12,
         showText: true,
         emptyLineColor: '#E0E0E0',
-        emptyLineWidth: 5
+        emptyLineWidth: 5,
+        text: null
     }
 
     /**
@@ -135,63 +122,34 @@ var CircleGauge = (function (global)
      * @public
      * @method
      * 그래프 생성
-     * @param {ElementObject} target 그래프를 생성할 타겟
+     * @param {ElementObject} t 그래프를 생성할 타겟
      */
     CircleGauge.prototype.create = function (t)
     {
-        var o = this._opts;
-
-        // Size of SVG
-        var sz = svgsz(o);
-       
-        // Create SVG
-        this.svg = createSVGElem('svg',{
-            'xmlns': 'http://www.w3.org/2000/svg',
-            'width': sz,
-            'height': sz
-        });
+        var o = this._opts,
+            ofs = offset(o);   
         
-        // Create Background Rect
-        this._bg = createSVGElem('rect',
-        {
-            'fill': o.bgColor,
-            'width': '100%',
-            'height': '100%'
+        this.svg = createSVGElem('svg', {'xmlns': 'http://www.w3.org/2000/svg', 'viewBox' : '0 0 100 100' });
+        this.text = o.text;
+        
+        this._emptypath = createSVGElem('path', {
+            'fill': 'transparent', 'stroke': o.emptyLineColor,
+            'stroke-width': o.emptyLineWidth, 'd': arcPath(99.99, o.radius, ofs, ofs)
         }, this.svg);
-    
-        this._start = (-Math.PI / 2);
-        this._end = this._start + (o.value / 100) * ((Math.PI / 2 * 3) - this._start);
-
-        // Create Empty Path
-        this._emptypath = createSVGElem('path',
-        {
-            'fill': 'transparent',
-            'stroke': o.emptyLineColor,
-            'stroke-width': o.emptyLineWidth,
-            'd': arcPath(this._start, 99.99, o.radius, o.emptyLineWidth / 2, o.emptyLineWidth / 2)
+       
+        this._path = createSVGElem('path', { 
+            'fill': 'transparent', 'stroke': o.lineColor,
+            'stroke-width': o.lineWidth, 'd': arcPath(o.value, o.radius, ofs, ofs)
         }, this.svg);
-       // this.svg.appendChild(this._emptypath);
-
-        // Create Path
-        this._path = createSVGElem('path',
-        {
-            'fill': 'transparent',
-            'stroke': o.lineColor,
-            'stroke-width': o.lineWidth,
-            'd': arcPath(this._start, o.value, o.radius, o.lineWidth / 2, o.lineWidth / 2)
-        }, this.svg);
-     
-        // Create Path
-        this._text = createSVGElem('text',
-        {
-            'fill': o.textColor,
-             'x': sz / 2,
-             'y': sz / 2 + o.textSize / 2,
-             'text-anchor': 'middle',
-             'font-size': o.textSize
+  
+        this._text = createSVGElem('text', {
+            'fill': o.textColor, 
+            'x': 50, 'y': 50 + o.textSize / 2,
+            'text-anchor': 'middle', 'font-size': o.textSize
         }, this.svg);
 
         t.appendChild(this.svg);
+
         return this;
     }
 
@@ -225,29 +183,29 @@ var CircleGauge = (function (global)
                     if (Math.abs(_this._opts.value - dv) <= (2 * Math.abs(unit)))
                     {
                         _this._opts.value = dv;
-                        _this._path.setAttribute('d', arcPath(_this._start, _this._opts.value, _this._opts.radius, ofs, ofs));
+                        _this._path.setAttribute('d', arcPath(_this._opts.value, _this._opts.radius, ofs, ofs));
                         clearInterval(itv);
                         if( typeof cb === "function")
                         {
                             cb();
                         }
                     }
-                    _this._path.setAttribute('d', arcPath(_this._start, _this._opts.value, _this._opts.radius, ofs, ofs));
+                    _this._path.setAttribute('d', arcPath(_this._opts.value, _this._opts.radius, ofs, ofs));
                    
-                    if (typeof _this.step === "function")
+                    if (typeof _this.text === "function")
                     {
-                        _this.step();
+                        _this.setText(_this.text(_this._opts.value));
                     }
                 }, 1);
                 return;
             }
             this._opts.value = p;
             
-            if (typeof _this.step === "function")
+            if (typeof _this.text === "function")
             {
-                _this.step();
+                 _this.setText(_this.text(_this._opts.value));
             }
-            this._path.setAttribute('d', arcPath(this._start, this._opts.value, this._opts.radius, ofs, ofs));                 
+            this._path.setAttribute('d', arcPath(this._opts.value, this._opts.radius, ofs, ofs));                 
         }
 
         return this._opts.value;
@@ -260,7 +218,7 @@ var CircleGauge = (function (global)
      * @param {String} str 설정할 text 값
      * @return {String}
      */
-    CircleGauge.prototype.text = function (s)
+    CircleGauge.prototype.setText = function (s)
     {
         if(s !== void 0)
         {
@@ -299,10 +257,9 @@ var CircleGauge = (function (global)
         {
             this._opts.textSize = s;
             var o = this._opts,
-                ofs = offset(o),
-                sz = svgsz(o);
+                ofs = offset(o);
             this._text.setAttribute('font-size', s);
-            __attrs(this._text, {'x': sz / 2,'y': sz / 2 + o.textSize / 2});           
+            __attrs(this._text, {'x':50, 'y':50 + o.textSize / 2});    
         }
         return this._opts.textSize;
     }
@@ -378,23 +335,6 @@ var CircleGauge = (function (global)
     /**
      * @public
      * @method
-     * 배경 색을 설정한다.
-     * @param {String} color 설정할 색상 값
-     * @return {String} 현재 color 반환
-     */
-    CircleGauge.prototype.bgColor = function (c)
-    {
-        if(typeof c !== "undefined")
-        {
-            this._opts.bgColor = c;
-            __attrs(this._bg, {fill : c});
-        }
-        return this._opts.bgColor;
-    }
-
-    /**
-     * @public
-     * @method
      * 반경을 설정한다.
      * @param {Number} radius 설정할 반경
      * @return {Number} 현재 radius 반환
@@ -417,13 +357,10 @@ var CircleGauge = (function (global)
     CircleGauge.prototype.resize = function ()
     {
         var o = this._opts,
-            ofs = offset(o),
-            sz = svgsz(o);
+            ofs = offset(o);
 
-        __attrs(this.svg, {'width': sz, 'height': sz});
-        __attrs(this._path, {'stroke-width': o.lineWidth,'d': arcPath(this._start, o.value, o.radius, ofs, ofs)});
-        __attrs(this._emptypath, {'stroke-width': o.emptyLineWidth,'d': arcPath(this._start, 99.99, o.radius, ofs, ofs)});
-        __attrs(this._text, {'x': sz / 2,'y': (sz + o.textSize) / 2});
+        __attrs(this._path, {'stroke-width': o.lineWidth,'d': arcPath(o.value, o.radius, ofs, ofs)});
+        __attrs(this._emptypath, {'stroke-width': o.emptyLineWidth,'d': arcPath(99.99, o.radius, ofs, ofs)});
     }
 
     if (typeof module != 'undefined' && module.exports) {
