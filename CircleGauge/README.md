@@ -7,7 +7,7 @@
 html
 ```html
 <script src="path/to/circleGauge.js"></script>
-<div id = 'target'></div>
+<div id ='target' style="width: 200px; height: 200px;"></div>
 ```
 javascript
 ```javascript
