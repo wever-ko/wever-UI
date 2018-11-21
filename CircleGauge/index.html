@@ -102,7 +102,7 @@
     valueA.innerHTML = circularBar.val();
    
     pvalue.addEventListener('input', function() {
-        circularBar.val(pvalue.value);
+        circularBar.val(palseFloat(pvalue.value));
         valueA.innerHTML = pvalue.value;
     });
 
