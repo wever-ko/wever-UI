@@ -74,26 +74,20 @@
     var target = document.getElementById('test');
    
     var circularBar = new CircleGauge({
-        lineWidth : 10,
-        value: 70,
+        lineWidth : 5,
+        value: 65,
         radius : 25,
-        lineColor: '#5ca284',
-        emptyLineColor: '#afdcc9',
+        lineColor: '#e65348',
+        emptyLineColor: '#eaeaea',
         showText: true,
-        emptyLineWidth: 10,
-        textColor : '#07472C',
+        emptyLineWidth: 2,
+        textColor : '#878787',
+        textSize:12,
         text: function(value) {
             return (parseFloat(value) |0 ) + "%";
         }
     }).create(target);
     
-    //circularBar.text("" + Math.round(circularBar.val()) + "%");
-    
-   // circularBar.step = function ()
-  //  {
-     //   circularBar.text("" + Math.round(this.val()) + "%");
-  //  }
-
     // Value
     var pvalue = document.getElementById('value');
     pvalue.value = circularBar.val();
@@ -102,7 +96,7 @@
     valueA.innerHTML = circularBar.val();
    
     pvalue.addEventListener('input', function() {
-        circularBar.val(palseFloat(pvalue.value));
+        circularBar.val(parseFloat(pvalue.value));
         valueA.innerHTML = pvalue.value;
     });
 
