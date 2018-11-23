@@ -15,7 +15,7 @@
             width: 100px;
         }
         #test {
-            padding:4px; margin: 0 auto; width: 200px; height: 250px;
+            padding:4px; margin: 0 auto; width: 200px; height: 250px; border-style: solid; border-width: 1px 1px 1px 1px; border-color: black;
         }
     </style>
 </head>
@@ -29,7 +29,7 @@
         </div>
         <div>
             <div class="attrName"> radius: </div>
-            <input type="range" id = "radius" name="radius" min = "40" max ="100" value="50">
+            <input type="range" id = "radius" name="radius" min = "0" max ="25" value="50">
             <a id="radiusA"></a>
         </div>
         <div>
@@ -77,14 +77,14 @@
     var circularBar = new HalfCircleGauge({
         lineWidth : 40,
         percentage: 30,
-        radius : 50,
-        lineColor: '#5ca284',
-        bgColor : '#ffffff',
+        radius : 25,
+        lineColor: '#fee870',
         showText: true,
-        lineWidth: 25,
-        emptyLineWidth: 25,
-        emptyLineColor: '#afdcc9',
-        textColor : '#07472C'
+        lineWidth: 5,
+        emptyLineWidth: 2,
+        emptyLineColor: '#eaeaea',
+        textColor : '#878787',
+        textSize : 12
     }).create(target);
     console.log(circularBar);
     circularBar.text("" + Math.round(circularBar.val()) + "%");
@@ -160,12 +160,12 @@
     })
 
     // bgColor
-    var bgColor = document.getElementById('bgColor');
+    /*var bgColor = document.getElementById('bgColor');
     bgColor.value= circularBar.bgColor();
 
     bgColor.addEventListener("change", function () {
         circularBar.bgColor(bgColor.value);
-    });
+    });*/
 
     //text Color
     var textColor = document.getElementById('textColor');

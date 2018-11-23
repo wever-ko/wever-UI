@@ -109,11 +109,11 @@ var HalfCircleGauge = (function (global)
             o = this.opts;
         
         // Create SVG
-        this.svg = createSVGElem('svg', {'xmlns': 'http://www.w3.org/2000/svg', 'width': sw, 'height': sh});
+        this.svg = createSVGElem('svg', {'xmlns': 'http://www.w3.org/2000/svg', 'viewBox' : '0 0 100 50' });
 
         // Create bg
-        this.bg = createSVGElem('rect', {'fill': o.bgColor, 'width': '100%', 'height': '100%'});
-        this.svg.appendChild(this.bg);
+       // this.bg = createSVGElem('rect', {'fill': o.bgColor, 'width': '100%', 'height': '100%'});
+        //this.svg.appendChild(this.bg);
 
         // Create empty line
         this.epath = createSVGElem('path', {
@@ -136,8 +136,8 @@ var HalfCircleGauge = (function (global)
         // Create text
         this._text = createSVGElem('text', {
             'fill': o.textColor,
-            'x': sw / 2,
-            'y': sh,
+            'x': 50,
+            'y': 50,
             'text-anchor': 'middle',
             'font-size': o.textSize
         }); 
@@ -211,7 +211,7 @@ var HalfCircleGauge = (function (global)
      * @param {String} c 설정할 배경 색상
      * @return {String} 현재 설정된 배경 색상
      */
-    HalfCircleGauge.prototype.bgColor = function (c)
+    /*HalfCircleGauge.prototype.bgColor = function (c)
     {
         if(typeof c !== "undefined")
         {
@@ -219,7 +219,7 @@ var HalfCircleGauge = (function (global)
             __attrs(this.bg, {'fill': c});
         }
         return this.opts.bgColor;
-    }
+    }*/
 
     /**
      * @public
@@ -369,7 +369,8 @@ var HalfCircleGauge = (function (global)
     HalfCircleGauge.prototype._geth = function ()
     {
         var o = this.opts;
-        return (o.radius + (o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth) / 2);
+        return 50;
+        //return (50+ (o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth) / 2);
     }
 
     /**
@@ -380,7 +381,7 @@ var HalfCircleGauge = (function (global)
     HalfCircleGauge.prototype._getoffx = function ()
     {
         var o = this.opts;
-        return ((o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth)) / 2;    
+        return 50 - o.radius ;//- ((o.lineWidth > o.emptyLineWidth ? o.lineWidth : o.emptyLineWidth)) / 2;    
     }
 
     /**
@@ -393,8 +394,8 @@ var HalfCircleGauge = (function (global)
         var sw = this._getw(),
             sh = this._geth(),
             o = this.opts;
-        __attrs(this.svg, {'width': sw, 'height': sh});
-        __attrs(this._text, {'x' : sw / 2, 'y': sh});
+       // __attrs(this.svg, {'width': sw, 'height': sh});
+        //__attrs(this._text, {'x' : sw / 2, 'y': sh});
         this.epath.setAttribute('d', arcPath(100, o.radius, this._getoffx(), sh));
         this.path.setAttribute('d', arcPath(o.value, o.radius, this._getoffx(), sh));
     }
